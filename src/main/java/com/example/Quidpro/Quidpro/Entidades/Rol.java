@@ -1,6 +1,6 @@
 package com.example.Quidpro.Quidpro.Entidades;
-
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "roles")
@@ -11,7 +11,11 @@ public class Rol {
     private int id;
     @Column(nullable = false, length = 20)
     private String rol;
-
+    /*RELACIONES DE MULTIPLICIDAD CON OTRAS CLASES*/
+    //Relacion Uno a Muchos con la clase Usuario
+    @OneToMany(targetEntity = Usuario.class, fetch = FetchType.LAZY, mappedBy = "rol")
+    private List<Usuario> usuarios;
+    /*METODOS*/
     //Metodo contructor vacio
     public Rol() {
     }

@@ -1,10 +1,8 @@
 package com.example.Quidpro.Quidpro.Servicios;
-
 import com.example.Quidpro.Quidpro.Entidades.Departamento;
 import com.example.Quidpro.Quidpro.Repositorios.DepartamentoRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 

@@ -1,6 +1,6 @@
 package com.example.Quidpro.Quidpro.Entidades;
-
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "departamentos")
@@ -11,7 +11,12 @@ public class Departamento {
     private int id;
     @Column(nullable = false, length = 100)
     private String departamento;
+    /*RELACIONES DE MULTIPLICIDAD CON OTRAS CLASES*/
+    //Relacion Uno a muchos con clase Ciudad
+    @OneToMany(targetEntity = Ciudad.class, fetch = FetchType.LAZY, mappedBy = "departamento")
+    private List<Ciudad> ciudades;
 
+    /*METODOS*/
     //Metodo contructor vacio
     public Departamento() {
     }

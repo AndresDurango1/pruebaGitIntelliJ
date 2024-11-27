@@ -1,6 +1,7 @@
 package com.example.Quidpro.Quidpro.Entidades;
-
 import jakarta.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "sectores")
@@ -11,7 +12,10 @@ public class Sector {
     private int id;
     @Column(nullable = false, length = 50)
     private String sector;
-
+    /*RELACIONES DE MULTIPLICIDAD CON OTRAS CLASES*/
+    @ManyToMany(mappedBy = "sectores")
+    private Set<Emprendimiento> emprendimientos = new HashSet<>();
+    /*METODOS*/
     //Metodo contructor vacio
     public Sector() {
     }
