@@ -7,9 +7,11 @@ import java.util.List;
 public class Estados {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_estado")
     private int id;
     @Column(nullable = false, length = 50)
     private String estado;
+
     /*RELACIONES DE MULTIPLICIDAD CON OTRAS CLASES*/
     //Relacion Uno a Muchos con la clase Emprendimiento
     @OneToMany(targetEntity = Emprendimiento.class, fetch = FetchType.LAZY, mappedBy = "estado")

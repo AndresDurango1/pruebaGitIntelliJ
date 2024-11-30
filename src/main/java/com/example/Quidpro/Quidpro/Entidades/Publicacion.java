@@ -26,29 +26,29 @@ public class Publicacion {
     //Relacion Uno a Muchos con la clase Comentario
     @OneToMany(targetEntity = Comentario.class, fetch = FetchType.LAZY, mappedBy = "publicacion")
     private List<Comentario> comentarios;
+
     //Relacion Uno a Muchos con la clase ImagenPublicacion
     @OneToMany(targetEntity = ImagenesPublicacion.class, fetch = FetchType.LAZY, mappedBy = "publicacion")
     private List<ImagenesPublicacion> imagenesPublicaciones;
+
     //Relacion Muchos a Uno con la clase Usuario
     @ManyToOne(targetEntity = Usuario.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario", nullable = false)
     @JsonIgnore
     private Usuario usuario;
+
     /*Metodos*/
     //Metodo constructor vacio
     public Publicacion() {
     }
     //Metodo constructor con todos los atributos
-
-    public Publicacion(int id, String titulo, String descripcion, LocalDate fecha_creacion, LocalDate fecha_actualizacion, String tag, List<Comentario> comentarios, List<ImagenesPublicacion> imagenesPublicaciones, Usuario usuario) {
+    public Publicacion(int id, String titulo, String descripcion, LocalDate fecha_creacion, LocalDate fecha_actualizacion, String tag, Usuario usuario) {
         this.id = id;
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.fecha_creacion = fecha_creacion;
         this.fecha_actualizacion = fecha_actualizacion;
         this.tag = tag;
-        this.comentarios = comentarios;
-        this.imagenesPublicaciones = imagenesPublicaciones;
         this.usuario = usuario;
     }
     //Metodos GETTER y SETTER

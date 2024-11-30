@@ -13,22 +13,16 @@ public class ImagenesComentario {
     private String titulo;
     @Column(nullable = false, length = 256)
     private String url_imagenComentario;
-    /*RELACIONES DE MULTIPLICIDAD CON OTRAS CLASES*/
-    //Relacion Muchos a Uno con la clase Comentarios
-    @ManyToOne(targetEntity = Comentario.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_comentario", nullable = false)
-    @JsonIgnore
-    private Comentario comentario;
+
     /*METODOS*/
     //Metodo constructor vacío
     public ImagenesComentario() {
     }
     //Metodo constructor con todos los parametros
-    public ImagenesComentario(int id, String titulo, String url_imagenComentario, Comentario comentario) {
+    public ImagenesComentario(int id, String titulo, String url_imagenComentario) {
         this.id = id;
         this.titulo = titulo;
         this.url_imagenComentario = url_imagenComentario;
-        this.comentario = comentario;
     }
     //Metodos GETTER y SETTER
     public int getId() {
@@ -48,11 +42,5 @@ public class ImagenesComentario {
     }
     public void setUrl_imagenComentario(String url_imagenComentario) {
         this.url_imagenComentario = url_imagenComentario;
-    }
-    public Comentario getComentario() {
-        return comentario;
-    }
-    public void setComentario(Comentario comentario) {
-        this.comentario = comentario;
     }
 }

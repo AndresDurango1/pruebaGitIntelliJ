@@ -1,6 +1,4 @@
 package com.example.Quidpro.Quidpro.Controladores;
-
-
 import com.example.Quidpro.Quidpro.Entidades.Rol;
 import com.example.Quidpro.Quidpro.Servicios.RolServicio;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/rol")
+@RequestMapping("/api/roles")
 public class RolControlador {
     @Autowired
     private final RolServicio rolServicio;

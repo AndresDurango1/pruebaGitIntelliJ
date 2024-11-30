@@ -1,8 +1,6 @@
 package com.example.Quidpro.Quidpro.Entidades;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -12,6 +10,7 @@ import java.util.Set;
 public class Emprendimiento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_emprendimiento")
     private int id;
     @Column(nullable = false, length = 50)
     private String nombre;
@@ -51,11 +50,12 @@ public class Emprendimiento {
     public Emprendimiento() {
     }
     //Metodo constructor con todos los atributos
-    public Emprendimiento(int id, String nombre, String descripcion, LocalDate fecha_creacion, Estados estado) {
+    public Emprendimiento(int id, String nombre, String descripcion, LocalDate fecha_creacion, Ciudad ciudad, Estados estado) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.fecha_creacion = fecha_creacion;
+        this.ciudad = ciudad;
         this.estado = estado;
     }
     //Metodos GETTER y SETTER
@@ -88,5 +88,23 @@ public class Emprendimiento {
     }
     public void setEstado(Estados estado) {
         this.estado = estado;
+    }
+    public Ciudad getCiudad() {
+        return ciudad;
+    }
+    public void setCiudad(Ciudad ciudad) {
+        this.ciudad = ciudad;
+    }
+    public Set<Sector> getSectores() {
+        return sectores;
+    }
+    public void setSectores(Set<Sector> sectores) {
+        this.sectores = sectores;
+    }
+    public Set<Usuario> getUsuarios() {
+        return usuarios;
+    }
+    public void setUsuarios(Set<Usuario> usuarios) {
+        this.usuarios = usuarios;
     }
 }

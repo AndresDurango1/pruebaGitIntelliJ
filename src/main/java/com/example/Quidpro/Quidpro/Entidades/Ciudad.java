@@ -16,14 +16,17 @@ public class Ciudad {
     //Relacion Uno a Muchos con clase Usuario
     @OneToMany(targetEntity = Usuario.class, fetch = FetchType.LAZY, mappedBy = "ciudad")
     private List<Usuario> usuarios;
+
     //Relacion Uno a Muchos con la clase Emprendimiento
-    @OneToMany(targetEntity = Estados.class, fetch = FetchType.LAZY, mappedBy = "ciudad")
-    private List<Emprendimiento> Emprendimientos;
+    @OneToMany(targetEntity = Emprendimiento.class, fetch = FetchType.LAZY, mappedBy = "ciudad")
+    private List<Emprendimiento> emprendimientos;
+
     //Relacion Muchos a uno con clase Departamento
     @ManyToOne(targetEntity = Departamento.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_departamento", nullable = false)
     @JsonIgnore
     private Departamento departamento;
+
     /*METODOS*/
     //Metodo constructor vacio
     public Ciudad() {
@@ -52,5 +55,21 @@ public class Ciudad {
     }
     public void setDepartamento(Departamento departamento) {
         this.departamento = departamento;
+    }
+
+    public List<Emprendimiento> getEmprendimientos() {
+        return emprendimientos;
+    }
+
+    public void setEmprendimientos(List<Emprendimiento> emprendimientos) {
+        this.emprendimientos = emprendimientos;
+    }
+
+    public List<Usuario> getUsuarios() {
+        return usuarios;
+    }
+
+    public void setUsuarios(List<Usuario> usuarios) {
+        this.usuarios = usuarios;
     }
 }

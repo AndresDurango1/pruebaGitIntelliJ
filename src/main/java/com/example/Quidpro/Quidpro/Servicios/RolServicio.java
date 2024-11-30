@@ -1,5 +1,4 @@
 package com.example.Quidpro.Quidpro.Servicios;
-
 import com.example.Quidpro.Quidpro.Entidades.Rol;
 import com.example.Quidpro.Quidpro.Repositorios.RolRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;

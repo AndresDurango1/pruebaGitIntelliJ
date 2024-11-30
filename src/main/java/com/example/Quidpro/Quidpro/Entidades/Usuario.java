@@ -1,5 +1,7 @@
 package com.example.Quidpro.Quidpro.Entidades;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.List;
@@ -23,42 +25,51 @@ public class Usuario {
     @Column(nullable = false, length = 50)
     private String telefono;
     //Relacion Uno a Uno con la clase ImagenesUsuario
-    @OneToOne(targetEntity = ImagenesUsuario.class, fetch = FetchType.LAZY, mappedBy = "usuario")
+    @OneToOne(targetEntity = ImagenesUsuario.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_imagenUsuario")
+    @JsonManagedReference
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private ImagenesUsuario imagenUsuario;
+
     //Relacion Uno a Muchos con la clase Comentario
     @OneToMany(targetEntity = Comentario.class, fetch = FetchType.LAZY, mappedBy = "usuario")
     private List<Comentario> comentarios;
+
     //Relacion Uno a Muchos con la clase Publicacion
     @OneToMany(targetEntity = Publicacion.class, fetch = FetchType.LAZY, mappedBy = "usuario")
     private List<Publicacion> publicaciones;
+
     //Relacion Muchos a Uno con Entidad Rol
     @ManyToOne(targetEntity = Rol.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_rol", nullable = false)
     @JsonIgnore
     private Rol rol;
+
     //Relacion Muchos a Uno con Clase Ciudad
     @ManyToOne(targetEntity = Ciudad.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_ciudad", nullable = false)
     @JsonIgnore
     private Ciudad ciudad;
+
     //Relacion Muchos a Muchos con la clase Emprendimiento
     @ManyToMany(mappedBy = "usuarios")
     private Set<Emprendimiento> emprendimientos = new HashSet<>();
+
     /*METODOS*/
     //Metodo contructor vacio
     public Usuario() {
     }
     //Metodo constructo con todos los atributos
-    public Usuario(int id, String nombres, String apellidos, String direccion, String correo, String telefono, String imagen_url, Ciudad ciudad, List<Comentario> comentarios, List<Publicacion> publicaciones) {
+    public Usuario(int id, String nombres, String apellidos, String direccion, String correo, String telefono, ImagenesUsuario imagenUsuario, Ciudad ciudad, Rol rol) {
         this.id = id;
         this.nombres = nombres;
         this.apellidos = apellidos;
         this.direccion = direccion;
         this.correo = correo;
         this.telefono = telefono;
-        this.comentarios = comentarios;
-        this.publicaciones = publicaciones;
+        this.imagenUsuario = imagenUsuario;
         this.ciudad = ciudad;
+        this.rol = rol;
     }
     //Metodos GETTER y SETTER
     public int getId() {
@@ -114,5 +125,23 @@ public class Usuario {
     }
     public void setPublicaciones(List<Publicacion> publicaciones) {
         this.publicaciones = publicaciones;
+    }
+    public ImagenesUsuario getImagenUsuario() {
+        return imagenUsuario;
+    }
+    public void setImagenUsuario(ImagenesUsuario imagenUsuario) {
+        this.imagenUsuario = imagenUsuario;
+    }
+    public Rol getRol() {
+        return rol;
+    }
+    public void setRol(Rol rol) {
+        this.rol = rol;
+    }
+    public Set<Emprendimiento> getEmprendimientos() {
+        return emprendimientos;
+    }
+    public void setEmprendimientos(Set<Emprendimiento> emprendimientos) {
+        this.emprendimientos = emprendimientos;
     }
 }

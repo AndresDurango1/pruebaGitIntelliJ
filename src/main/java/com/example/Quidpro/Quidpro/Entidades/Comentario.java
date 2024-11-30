@@ -13,28 +13,33 @@ public class Comentario {
     @Column(nullable = false, length = 256)
     private String texto;
     /*RELACIONES DE MULTIPLICIDAD CON OTRAS CLASES*/
-    //Relacion Uno a Muchos con la clase ImagenesComentarioRepositorio
-    @OneToMany(targetEntity = ImagenesComentario.class,  fetch = FetchType.LAZY, mappedBy = "comentario")
+    //Relacion Uno a Muchos con la clase ImagenesComentario
+    @OneToMany(targetEntity = ImagenesComentario.class,  fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_imagenComentario")
     private List<ImagenesComentario> imagenesComentarios;
+
     //Relacion Muchos a Uno con la clase Usuario
     @ManyToOne(targetEntity = Usuario.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario", nullable = false)
     @JsonIgnore
-    /*METODOS*/
     private Usuario usuario;
-    //Relacion Muchos a Uno con la clase Publicaciones: Una publicacion puede tener muchos comentarios, pero un comentario solo pertenece a una publicacion
+
+    //Relacion Muchos a Uno con la clase Publicacion: Una publicacion puede tener muchos comentarios, pero un comentario solo pertenece a una publicacion
     @ManyToOne(targetEntity = Publicacion.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_publicacion", nullable = false)
     @JsonIgnore
     private Publicacion publicacion;
+
+    /*METODOS*/
     //Metodo constructor vacio
     public Comentario() {
     }
     //Metodo constructor con todos los atributos
-    public Comentario(int id, String texto, List<ImagenesComentario> imagenesComentarios, Publicacion publicacion) {
+    public Comentario(int id, String texto, List<ImagenesComentario> imagenesComentarios, Usuario usuario, Publicacion publicacion) {
         this.id = id;
         this.texto = texto;
         this.imagenesComentarios = imagenesComentarios;
+        this.usuario = usuario;
         this.publicacion = publicacion;
     }
     //Metodos GETTER  y SETTER
@@ -61,5 +66,17 @@ public class Comentario {
     }
     public void setPublicacion(Publicacion publicacion) {
         this.publicacion = publicacion;
+    }
+    public Usuario getUsuario() {
+        return usuario;
+    }
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+    public List<ImagenesComentario> getImagenesComentarios() {
+        return imagenesComentarios;
+    }
+    public void setImagenesComentarios(List<ImagenesComentario> imagenesComentarios) {
+        this.imagenesComentarios = imagenesComentarios;
     }
 }

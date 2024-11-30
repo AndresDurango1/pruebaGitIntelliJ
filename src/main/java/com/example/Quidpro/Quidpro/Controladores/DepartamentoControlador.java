@@ -11,11 +11,10 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/departamento")
+@RequestMapping("/api/departamento")
 public class DepartamentoControlador {
-
-    private final DepartamentoServicio departamentoServicio;
     @Autowired
+    private final DepartamentoServicio departamentoServicio;
     public DepartamentoControlador(DepartamentoServicio departamentoServicio) {
         this.departamentoServicio = departamentoServicio;
     }

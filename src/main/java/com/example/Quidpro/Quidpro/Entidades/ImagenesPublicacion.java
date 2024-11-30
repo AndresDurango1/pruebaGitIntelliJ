@@ -7,28 +7,27 @@ import jakarta.persistence.*;
 public class ImagenesPublicacion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_imagenPublicacion")
+    @Column(name = "id_imagenPublicacion", insertable = false, updatable = false)
     private int id;
     @Column(nullable = false, length = 50)
     private String titulo;
     @Column(nullable = false, length = 256)
     private String url_imagenPublicacion;
-    /*RELACIONES DE MULTIPLICIDAD CON OTRAS CLASES*/
-    //Relacion Muchos a Uno con la clase Publicaciones
+
     @ManyToOne(targetEntity = Publicacion.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_publicacion", nullable = false)
+    @JoinColumn(name = "id_imagenPublicacion", nullable = false)
     @JsonIgnore
     private Publicacion publicacion;
+
     /*METODOS*/
     //Metodo constructor vacio
     public ImagenesPublicacion() {
     }
     //Metodo constructor con todos los atributos
-    public ImagenesPublicacion(int id, String titulo, String url_imagenPublicacion, Publicacion publicacion) {
+    public ImagenesPublicacion(int id, String titulo, String url_imagenPublicacion) {
         this.id = id;
         this.titulo = titulo;
         this.url_imagenPublicacion = url_imagenPublicacion;
-        this.publicacion = publicacion;
     }
     //Metodos GETTER y SETTER
     public int getId() {
@@ -48,11 +47,5 @@ public class ImagenesPublicacion {
     }
     public void setUrl_imagenPublicacion(String url_imagenPublicacion) {
         this.url_imagenPublicacion = url_imagenPublicacion;
-    }
-    public Publicacion getPublicacion() {
-        return publicacion;
-    }
-    public void setPublicacion(Publicacion publicacion) {
-        this.publicacion = publicacion;
     }
 }
