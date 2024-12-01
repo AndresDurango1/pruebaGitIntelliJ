@@ -49,6 +49,7 @@ public class UsuarioServicio {
             usuario.setImagenUsuario(imagenUsuario);
         }
     }
+
     // Metodo para crear un usuario
     public Usuario crearUsuario(Usuario usuario, Integer idCiudad, Integer idRol, Integer idImagenUsuario) {
         if (!esCampoValido(usuario.getNombres())) {

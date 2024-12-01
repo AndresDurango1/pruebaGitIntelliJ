@@ -2,6 +2,7 @@ package com.example.Quidpro.Quidpro.Controladores;
 
 import com.example.Quidpro.Quidpro.Entidades.ImagenesUsuario;
 import com.example.Quidpro.Quidpro.Entidades.Usuario;
+import com.example.Quidpro.Quidpro.Excepciones.ResourceNotFoundException;
 import com.example.Quidpro.Quidpro.Servicios.CiudadServicio;
 import com.example.Quidpro.Quidpro.Servicios.ImagenesUsuarioServicio;
 import com.example.Quidpro.Quidpro.Servicios.RolServicio;
@@ -28,6 +29,10 @@ public class UsuarioControlador {
         this.ciudadServicio = ciudadServicio;
         this.rolServicio = rolServicio;
         this.imagenesUsuarioServicio = imagenesUsuarioServicio;
+    }
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<String> handleResourceNotFoundException(ResourceNotFoundException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
     //Metodo para consultar usuarios por id
     @GetMapping("/{id}")
@@ -68,6 +73,7 @@ public class UsuarioControlador {
             usuario.setCorreo(correo);
             usuario.setTelefono(telefono);
             usuario.setImagenUsuario(imagenesUsuario);
+
             Usuario usuarioGuardado = usuarioServicio.crearUsuario(usuario, idCiudad, idRol, idImagen);
             return ResponseEntity.status(HttpStatus.CREATED).body(usuarioGuardado);
         } catch (Exception e) {
@@ -90,15 +96,14 @@ public class UsuarioControlador {
             @RequestParam(value = "idRol", required = false) Integer idRol,
             @RequestParam(value = "imagen", required = false) MultipartFile imagen
     ) {
-        System.out.println("ID recibido: " + id); // Aquí verificas si el id llega correctamente
-
+        //System.out.println("ID recibido: " + id); //Mensaje de depuracion
         if (id == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
         try {
             Usuario usuarioExistente = usuarioServicio.consultarUsuarioById(id);
             if (usuarioExistente == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Usuario no encontrado
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
             if (nombres != null) {
                 usuarioExistente.setNombres(nombres);

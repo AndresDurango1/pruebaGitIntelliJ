@@ -1,7 +1,9 @@
 package com.example.Quidpro.Quidpro.Servicios;
 import com.example.Quidpro.Quidpro.Entidades.ImagenesPublicacion;
+import com.example.Quidpro.Quidpro.Entidades.Publicacion;
 import com.example.Quidpro.Quidpro.Excepciones.InvalidDataException;
 import com.example.Quidpro.Quidpro.Repositorios.ImagenesPublicacionRepositorio;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,8 +19,17 @@ public class ImagenesPublicacionServicio {
     public ImagenesPublicacionServicio(ImagenesPublicacionRepositorio imagenesPublicacionRepositorio) {
         this.imagenesPublicacionRepositorio = imagenesPublicacionRepositorio;
     }
-    // Metodo para guardar múltiples imágenes para una publicación
-    public List<ImagenesPublicacion> guardarImagenes(MultipartFile[] archivos) {
+    // Metodo para consultar una imagen por su ID
+    public ImagenesPublicacion consultarImagenPorId(int id) {
+        return imagenesPublicacionRepositorio.findById(id)
+                .orElseThrow(() -> new InvalidDataException("Imagen no encontrada con ID: " + id));
+    }
+    // Metodo para consultar todas las imágenes
+    public List<ImagenesPublicacion> consultarImagenes() {
+        return imagenesPublicacionRepositorio.findAll();
+    }
+    // Metodo para guardar una nueva imagen
+    public List<ImagenesPublicacion> guardarImagenes(MultipartFile[] archivos, Publicacion publicacion) {
         if (archivos == null || archivos.length == 0) {
             throw new InvalidDataException("No se proporcionaron imágenes para guardar");
         }
@@ -30,38 +41,31 @@ public class ImagenesPublicacionServicio {
             List<ImagenesPublicacion> imagenesGuardadas = new ArrayList<>();
             for (MultipartFile archivo : archivos) {
                 if (!archivo.isEmpty()) {
-                    String titulo = UUID.randomUUID().toString() + "." + getExtension(archivo.getOriginalFilename());
+                    // Generar un título único para evitar conflictos de nombres
+                    String titulo = "publicacion_"+publicacion.getId()+"_"+archivo.getOriginalFilename();
+                    // Ruta de destino para guardar la imagen
                     Path rutaDestino = path.resolve(titulo);
                     Files.copy(archivo.getInputStream(), rutaDestino, StandardCopyOption.REPLACE_EXISTING);
+                    // Crear la entidad `ImagenesPublicacion`
                     ImagenesPublicacion imagen = new ImagenesPublicacion();
                     imagen.setTitulo(titulo);
                     imagen.setUrl_imagenPublicacion("imagesPublicaciones/" + titulo);
+                    // Asociar la imagen con la publicación
+                    imagen.setPublicacion(publicacion);
+                    // Guardar la imagen en la base de datos
+                    imagen = imagenesPublicacionRepositorio.save(imagen);
+                    imagenesGuardadas.add(imagen);
                 }
             }
             return imagenesGuardadas;
         } catch (IOException e) {
-            throw new RuntimeException("Error al guardar las imágenes de la publicación: ", e);
+            throw new RuntimeException("Error al guardar las imágenes: ", e);
         }
     }
-    private String getExtension(String filename) {
-        int lastIndex = filename.lastIndexOf('.');
-        return lastIndex == -1 ? "" : filename.substring(lastIndex + 1);
-    }
-    // Metodo para Consultar todos los Registros
-    public List<ImagenesPublicacion> consultarImagenes() {
-        return imagenesPublicacionRepositorio.findAll();
-    }
-    // Metodo para Consultar un Registro por id
-    public ImagenesPublicacion consultarImagenPorId(int id) {
-        return imagenesPublicacionRepositorio.findById(id)
-                .orElseThrow(() -> new InvalidDataException("Imagen no encontrada con ID: " + id));
-    }
-    //Metodo para actualizar una imagen de la publicacion
-    public ImagenesPublicacion actualizarImagen(int id, MultipartFile archivo) {
-        // Buscar la imagen por ID
+    // Metodo para actualizar una imagen existente
+    public ImagenesPublicacion actualizarImagen(int id, MultipartFile archivo, Publicacion publicacion) {
         ImagenesPublicacion imagenExistente = imagenesPublicacionRepositorio.findById(id)
                 .orElseThrow(() -> new InvalidDataException("Imagen no encontrada con ID: " + id));
-
         try {
             // Eliminar el archivo físico antiguo
             Path pathArchivoAntiguo = Paths.get(RUTA_BASE + imagenExistente.getTitulo());
@@ -69,7 +73,7 @@ public class ImagenesPublicacionServicio {
 
             // Guardar el nuevo archivo
             if (archivo != null && !archivo.isEmpty()) {
-                String nuevoTitulo = UUID.randomUUID().toString() + "." + getExtension(archivo.getOriginalFilename());
+                String nuevoTitulo = "publicacion_"+publicacion.getId()+"_"+archivo.getOriginalFilename();
                 Path rutaDestino = Paths.get(RUTA_BASE).resolve(nuevoTitulo);
                 Files.copy(archivo.getInputStream(), rutaDestino, StandardCopyOption.REPLACE_EXISTING);
 
@@ -84,17 +88,35 @@ public class ImagenesPublicacionServicio {
             throw new RuntimeException("Error al actualizar la imagen", e);
         }
     }
-    // Metodo para Eliminar un Registro por Id
-    public String eliminarImagen(int id) {
-        ImagenesPublicacion imagenAEliminar = consultarImagenPorId(id);
-        // Eliminar el archivo físico del sistema de archivos
-        try {
-            Path pathArchivo = Paths.get(RUTA_BASE + imagenAEliminar.getTitulo());
-            Files.deleteIfExists(pathArchivo);
-        } catch (IOException e) {
-            throw new RuntimeException("Error al eliminar el archivo de la imagen", e);
+    // Metodo para eliminar varias imágenes
+    @Transactional
+    public void eliminarImagen(List<ImagenesPublicacion> imagenes) {
+        for (ImagenesPublicacion imagen : imagenes) {
+            eliminarImagenPorId(imagen.getId());
         }
-        imagenesPublicacionRepositorio.delete(imagenAEliminar);
-        return "Imagen Eliminada de manera éxitosa";
+    }
+    private void eliminarImagenPorId(int id) {
+        ImagenesPublicacion imagen = imagenesPublicacionRepositorio.findById(id)
+                .orElseThrow(() -> new InvalidDataException("Imagen no encontrada con ID: " + id));
+        System.out.println("Eliminando imagen: " + imagen);
+        try {
+            // Eliminar archivo del sistema
+            Path pathArchivo = Paths.get(RUTA_BASE + imagen.getTitulo());
+            Files.deleteIfExists(pathArchivo);
+            // Verificar existencia antes de eliminar
+            if (imagenesPublicacionRepositorio.existsById(id)) {
+                imagenesPublicacionRepositorio.deleteById(id);
+                System.out.println("Imagen eliminada con ID: " + id);
+            } else {
+                System.out.println("La imagen ya no existe en la base de datos.");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Error al eliminar la imagen", e);
+        }
+    }
+    // Metodo auxiliar para obtener la extensión del archivo
+    private String getExtension(String filename) {
+        int lastIndex = filename.lastIndexOf('.');
+        return lastIndex == -1 ? "" : filename.substring(lastIndex + 1);
     }
 }

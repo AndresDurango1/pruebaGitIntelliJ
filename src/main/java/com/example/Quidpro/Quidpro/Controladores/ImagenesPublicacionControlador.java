@@ -1,12 +1,16 @@
 package com.example.Quidpro.Quidpro.Controladores;
+
 import com.example.Quidpro.Quidpro.Entidades.ImagenesPublicacion;
+import com.example.Quidpro.Quidpro.Entidades.Publicacion;
 import com.example.Quidpro.Quidpro.Excepciones.InvalidDataException;
 import com.example.Quidpro.Quidpro.Servicios.ImagenesPublicacionServicio;
+import com.example.Quidpro.Quidpro.Servicios.PublicacionServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -14,12 +18,14 @@ import java.util.List;
 public class ImagenesPublicacionControlador {
     @Autowired
     private final ImagenesPublicacionServicio imagenesPublicacionServicio;
-    public ImagenesPublicacionControlador(ImagenesPublicacionServicio imagenesPublicacionServicio){
+    private final PublicacionServicio publicacionServicio;
+    public ImagenesPublicacionControlador(ImagenesPublicacionServicio imagenesPublicacionServicio, PublicacionServicio publicacionServicio) {
         this.imagenesPublicacionServicio = imagenesPublicacionServicio;
+        this.publicacionServicio = publicacionServicio;
     }
-    //Metodo para consultar imagenes publicaciones por id
+    // Metodo para consultar imagenes publicaciones por id
     @GetMapping("/{id}")
-    public ResponseEntity<ImagenesPublicacion> consultarImagenPublicacionById(@PathVariable Integer id){
+    public ResponseEntity<ImagenesPublicacion> consultarImagenPublicacionById(@PathVariable Integer id) {
         try {
             ImagenesPublicacion imagen = imagenesPublicacionServicio.consultarImagenPorId(id);
             return new ResponseEntity<>(imagen, HttpStatus.OK);
@@ -27,21 +33,29 @@ public class ImagenesPublicacionControlador {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
-    //Metodo para consultar todas las imagenes de publicaciones
+    // Metodo para consultar todas las imagenes de publicaciones
     @GetMapping
-    public ResponseEntity<List<ImagenesPublicacion>> consultarImagenesPublicaciones(){
-        try{
+    public ResponseEntity<List<ImagenesPublicacion>> consultarImagenesPublicaciones() {
+        try {
             List<ImagenesPublicacion> imagenes = imagenesPublicacionServicio.consultarImagenes();
             return new ResponseEntity<>(imagenes, HttpStatus.OK);
-        }catch (Exception e) {
+        } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
-    //Metodo para guardar una imagen
+    // Metodo para guardar una imagen
     @PostMapping
-    public ResponseEntity<List<ImagenesPublicacion>> guardarImagenesPublicacion(@RequestParam("archivos")MultipartFile[] archivos){
+    public ResponseEntity<List<ImagenesPublicacion>> guardarImagenesConPublicacion(
+            @PathVariable("idPublicacion") Integer idPublicacion,
+            @RequestParam("archivos") MultipartFile[] archivos) {
         try {
-            List<ImagenesPublicacion> imagenesGuardadas = imagenesPublicacionServicio.guardarImagenes(archivos);
+            // Obtener la publicación desde el servicio
+            Publicacion publicacion = publicacionServicio.consultarPublicacionById(idPublicacion);
+            if (publicacion == null) {
+                return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            }
+            // Guardar las imágenes asociadas a la publicación
+            List<ImagenesPublicacion> imagenesGuardadas = imagenesPublicacionServicio.guardarImagenes(archivos, publicacion);
             return new ResponseEntity<>(imagenesGuardadas, HttpStatus.CREATED);
         } catch (InvalidDataException e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -49,26 +63,25 @@ public class ImagenesPublicacionControlador {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    //Metodo para actualizar una imagen por id
+    /*
+    // Metodo para actualizar varias imágenes
     @PutMapping("/{id}")
-    public ResponseEntity<ImagenesPublicacion> actualizarImagen(@PathVariable int id, @RequestParam("archivo") MultipartFile archivo) {
+    public ResponseEntity<List<ImagenesPublicacion>> actualizarImagenes(
+            @PathVariable int id,
+            @RequestParam("imagenesIds") List<Integer> imagenesIds, // Recibir lista de IDs
+            @RequestParam("archivo") MultipartFile archivo) {
         try {
-            ImagenesPublicacion imagenActualizada = imagenesPublicacionServicio.actualizarImagen(id, archivo);
-            return new ResponseEntity<>(imagenActualizada, HttpStatus.OK);
+            // Iterar sobre los IDs y actualizar las imágenes
+            List<ImagenesPublicacion> imagenesActualizadas = new ArrayList<>();
+            for (Integer imagenId : imagenesIds) {
+                ImagenesPublicacion imagenActualizada = imagenesPublicacionServicio.actualizarImagen(imagenId, archivo, );
+                imagenesActualizadas.add(imagenActualizada);
+            }
+            return new ResponseEntity<>(imagenesActualizadas, HttpStatus.OK);
         } catch (InvalidDataException e) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
-    //Metodo para eliminar imagenes por id
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> eliminarImagenPublicacion(@PathVariable Integer id){
-        try {
-            String mensaje = imagenesPublicacionServicio.eliminarImagen(id);
-            return ResponseEntity.ok(mensaje);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Error al eliminar la imagen", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+    }*/
 }
