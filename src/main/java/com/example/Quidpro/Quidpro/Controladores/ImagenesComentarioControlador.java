@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/imagenesComentario")
+@CrossOrigin(origins = "http://localhost:4200")
 public class ImagenesComentarioControlador {
     @Autowired
     private final ImagenesComentarioServicio imagenesComentarioServicio;

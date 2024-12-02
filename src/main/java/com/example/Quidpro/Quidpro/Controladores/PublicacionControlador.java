@@ -15,6 +15,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/api/publicaciones")
+@CrossOrigin(origins = "http://localhost:4200")
 public class PublicacionControlador {
     @Autowired
     private final PublicacionServicio publicacionServicio;

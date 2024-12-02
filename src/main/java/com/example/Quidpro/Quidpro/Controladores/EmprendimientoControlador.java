@@ -1,5 +1,4 @@
 package com.example.Quidpro.Quidpro.Controladores;
-
 import com.example.Quidpro.Quidpro.Entidades.Emprendimiento;
 import com.example.Quidpro.Quidpro.Entidades.Sector;
 import com.example.Quidpro.Quidpro.Entidades.Usuario;
@@ -17,6 +16,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/api/emprendimientos")
+@CrossOrigin(origins = "http://localhost:4200")
 public class EmprendimientoControlador {
     @Autowired
     private final EmprendimientoServicio emprendimientoServicio;

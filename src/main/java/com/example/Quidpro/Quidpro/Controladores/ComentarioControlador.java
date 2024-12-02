@@ -16,6 +16,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/api/comentarios")
+@CrossOrigin(origins = "http://localhost:4200")
 public class ComentarioControlador {
     @Autowired
     private final ComentarioServicio comentarioServicio;

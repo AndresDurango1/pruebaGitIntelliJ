@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/imagenesPublicacion")
+@CrossOrigin(origins = "http://localhost:4200")
 public class ImagenesPublicacionControlador {
     @Autowired
     private final ImagenesPublicacionServicio imagenesPublicacionServicio;

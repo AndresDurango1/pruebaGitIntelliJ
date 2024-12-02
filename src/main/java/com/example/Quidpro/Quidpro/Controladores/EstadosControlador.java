@@ -1,5 +1,4 @@
 package com.example.Quidpro.Quidpro.Controladores;
-
 import com.example.Quidpro.Quidpro.Entidades.Estados;
 import com.example.Quidpro.Quidpro.Servicios.EstadosServicio;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +11,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/estados")
+@CrossOrigin(origins = "http://localhost:4200")
 public class EstadosControlador {
     @Autowired
     private final EstadosServicio estadosServicio;
