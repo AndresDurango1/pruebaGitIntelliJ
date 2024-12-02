@@ -32,11 +32,15 @@ public class Usuario {
     private ImagenesUsuario imagenUsuario;
 
     //Relacion Uno a Muchos con la clase Comentario
-    @OneToMany(targetEntity = Comentario.class, fetch = FetchType.LAZY, mappedBy = "usuario")
+    @OneToMany(targetEntity = Comentario.class, fetch = FetchType.LAZY,cascade = CascadeType.ALL, mappedBy = "usuario")
+    @JsonManagedReference
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private List<Comentario> comentarios;
 
     //Relacion Uno a Muchos con la clase Publicacion
-    @OneToMany(targetEntity = Publicacion.class, fetch = FetchType.LAZY, mappedBy = "usuario")
+    @OneToMany(targetEntity = Publicacion.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "usuario")
+    @JsonManagedReference
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private List<Publicacion> publicaciones;
 
     //Relacion Muchos a Uno con Entidad Rol

@@ -19,12 +19,14 @@ public class ComentarioServicio {
     private final PublicacionRepositorio publicacionRepositorio;
     private final UsuarioRepositorio usuarioRepositorio;
     private final ImagenesComentarioRepositorio imagenesComentarioRepositorio;
+    private final ImagenesComentarioServicio imagenesComentarioServicio;
     @Autowired
-    public ComentarioServicio(ComentarioRepositorio comentarioRepositorio, PublicacionRepositorio publicacionRepositorio, UsuarioRepositorio usuarioRepositorio, ImagenesComentarioRepositorio imagenesComentarioRepositorio) {
+    public ComentarioServicio(ComentarioRepositorio comentarioRepositorio, PublicacionRepositorio publicacionRepositorio, UsuarioRepositorio usuarioRepositorio, ImagenesComentarioRepositorio imagenesComentarioRepositorio, ImagenesComentarioServicio imagenesComentarioServicio) {
         this.comentarioRepositorio = comentarioRepositorio;
         this.publicacionRepositorio = publicacionRepositorio;
         this.usuarioRepositorio = usuarioRepositorio;
         this.imagenesComentarioRepositorio = imagenesComentarioRepositorio;
+        this.imagenesComentarioServicio = imagenesComentarioServicio;
     }
     // Metodo auxiliar para validar campos
     private boolean esCampoValido(String campo) {
@@ -35,27 +37,21 @@ public class ComentarioServicio {
         return optional.orElseThrow(() -> new ResourceNotFoundException(mensaje));
     }
     // Metodo helper para asignar relaciones
-    private void asignarRelaciones(Comentario comentario, Integer idPublicacion, Integer idUsuario, List<Integer> idsImagenComentario) {
+    private void asignarRelaciones(Comentario comentario, Integer idPublicacion, Integer idUsuario) {
         Publicacion publicacion = validarExistencia(publicacionRepositorio.findById(idPublicacion), "Publicación no encontrado");
         Usuario usuario = validarExistencia(usuarioRepositorio.findById(idUsuario), "Usuario no encontrado");
         List<ImagenesComentario> imagenesComentarios = new ArrayList<>();
-        if(idsImagenComentario != null){
-            for(Integer idImagenComentario:idsImagenComentario){
-                ImagenesComentario imagenComentario = validarExistencia(imagenesComentarioRepositorio.findById(idImagenComentario), "imagen no encontrada");
-                imagenesComentarios.add(imagenComentario);
-            }
-        }
         comentario.setPublicacion(publicacion);
         comentario.setUsuario(usuario);
-        comentario.setImagenes(imagenesComentarios);
+        comentario.setImagenesComentarios(imagenesComentarios);
     }
     //Definicion de Métodos crud para la entidad Comentario (CRUD)
     //Metodo para Crear Registros
-    public Comentario crearComentario(Comentario comentario, Integer idPublicacion, Integer idUsuario, List<Integer> idsImagenComentario) {
+    public Comentario crearComentario(Comentario comentario, Integer idPublicacion, Integer idUsuario) {
         if (!esCampoValido(comentario.getTexto())) {
             throw new InvalidDataException("El texto del comentario es obligatorio.");
         }
-        asignarRelaciones(comentario, idPublicacion, idUsuario, idsImagenComentario);
+        asignarRelaciones(comentario, idPublicacion, idUsuario);
         return comentarioRepositorio.save(comentario);
     }
     //Metodo para Consultar todos los Registros
@@ -67,19 +63,20 @@ public class ComentarioServicio {
         return validarExistencia(comentarioRepositorio.findById(id), "Comentario no encontrado con el ID: " + id);
     }
     //Metodo para actualizar un comentario
-    public Comentario actualizarComentarioById(Integer id, Comentario comentario, Integer idPublicacion, Integer idUsuario,List<Integer> idsImagenComentario) {
+    public Comentario actualizarComentarioById(Integer id, Comentario comentario, Integer idPublicacion, Integer idUsuario) {
         Comentario comentarioExistente = consultarComentarioById(id);
         if (!esCampoValido(comentario.getTexto())) {
             throw new InvalidDataException("El texto del comentario es obligatorio.");
         }
         comentarioExistente.setTexto(comentario.getTexto());
-        asignarRelaciones(comentarioExistente, idPublicacion, idUsuario, idsImagenComentario);
+        asignarRelaciones(comentarioExistente, idPublicacion, idUsuario);
         return comentarioRepositorio.save(comentarioExistente);
     }
     //Metodo para Eliminar un Registro por Id
     public String eliminarComentario(Integer id) {
         Comentario comentarioEliminar = consultarComentarioById(id);
         try {
+            imagenesComentarioServicio.eliminarImagen(comentarioEliminar.getImagenesComentarios());
             comentarioRepositorio.delete(comentarioEliminar);
             return "Comentario eliminado con éxito";
         } catch (Exception e) {

@@ -58,6 +58,9 @@ public class PublicacionControlador {
             } else {
                 System.out.println("No se recibieron imágenes.");
             }
+            if(fecha_creacion == null) {
+                fecha_creacion = LocalDate.now();
+            }
             if (fecha_actualizacion == null) {
                 fecha_actualizacion = LocalDate.now();
             }
@@ -68,6 +71,7 @@ public class PublicacionControlador {
             publicacion.setFecha_actualizacion(fecha_actualizacion);
             publicacion.setTag(tag);
             Publicacion publicacionGuardada = publicacionServicio.crearPublicacion(publicacion, idUsuario);
+
             if (imagenes != null) {
                 List<ImagenesPublicacion> imagenesGuardadas = imagenesPublicacionServicio.guardarImagenes(imagenes, publicacionGuardada);
                 publicacionGuardada.setImagenesPublicaciones(imagenesGuardadas);
@@ -106,7 +110,6 @@ public class PublicacionControlador {
             Set<Integer> idsImagenesActualizadas = new HashSet<>();
             if (imagenes != null && imagenes.length > 0) {
                 for (MultipartFile imagen : imagenes) {
-                    // Verificar si la imagen ya existe (basado en un ID u otra lógica)
                     ImagenesPublicacion imagenExistente = imagenesExistentes.stream()
                             .filter(img -> img.getTitulo().equals("publicacion_"+publicacionExistente.getId()+"_"+imagen.getOriginalFilename()))
                             .findFirst()
@@ -124,7 +127,7 @@ public class PublicacionControlador {
                     }
                 }
                 Iterator<ImagenesPublicacion> iterator = imagenesExistentes.iterator();
-                List<ImagenesPublicacion> imagenesAEliminar = new ArrayList<>(); // Lista para almacenar imágenes a eliminar
+                List<ImagenesPublicacion> imagenesAEliminar = new ArrayList<>();
                 while (iterator.hasNext()) {
                     ImagenesPublicacion imagenExistente = iterator.next();
                     if (!idsImagenesActualizadas.contains(imagenExistente.getId())) {

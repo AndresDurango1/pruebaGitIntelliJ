@@ -13,7 +13,7 @@ public class Publicacion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_publicacion")
-    private int id;
+    private Integer id;
     @Column(nullable = false, length = 50)
     private String titulo;
     @Column(nullable = false, length = 256)
@@ -47,7 +47,7 @@ public class Publicacion {
     public Publicacion() {
     }
     //Metodo constructor con todos los atributos
-    public Publicacion(int id, String titulo, String descripcion, LocalDate fecha_creacion, LocalDate fecha_actualizacion, String tag, Usuario usuario) {
+    public Publicacion(Integer id, String titulo, String descripcion, LocalDate fecha_creacion, LocalDate fecha_actualizacion, String tag, Usuario usuario) {
         this.id = id;
         this.titulo = titulo;
         this.descripcion = descripcion;
@@ -57,10 +57,10 @@ public class Publicacion {
         this.usuario = usuario;
     }
     //Metodos GETTER y SETTER
-    public int getId() {
+    public Integer getId() {
         return id;
     }
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
     public String getTitulo() {

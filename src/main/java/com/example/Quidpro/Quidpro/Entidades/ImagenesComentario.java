@@ -7,12 +7,17 @@ import jakarta.persistence.*;
 public class ImagenesComentario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_imagenComentario")
-    private int id;
+    @Column(name = "id_imagenComentario", insertable = false, updatable = false)
+    private Integer id;
     @Column(nullable = false, length = 50)
     private String titulo;
     @Column(nullable = false, length = 256)
     private String url_imagenComentario;
+    //Relacion Muchos a uno con la tabla Publicacion
+    @ManyToOne(targetEntity = Comentario.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_comentario", nullable = false)
+    @JsonIgnore
+    private Comentario comentario;
 
     /*METODOS*/
     //Metodo constructor vacío
@@ -42,5 +47,13 @@ public class ImagenesComentario {
     }
     public void setUrl_imagenComentario(String url_imagenComentario) {
         this.url_imagenComentario = url_imagenComentario;
+    }
+
+    public Comentario getComentario() {
+        return comentario;
+    }
+
+    public void setComentario(Comentario comentario) {
+        this.comentario = comentario;
     }
 }

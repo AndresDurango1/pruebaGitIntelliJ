@@ -70,18 +70,15 @@ public class ImagenesPublicacionServicio {
             // Eliminar el archivo físico antiguo
             Path pathArchivoAntiguo = Paths.get(RUTA_BASE + imagenExistente.getTitulo());
             Files.deleteIfExists(pathArchivoAntiguo);
-
             // Guardar el nuevo archivo
             if (archivo != null && !archivo.isEmpty()) {
                 String nuevoTitulo = "publicacion_"+publicacion.getId()+"_"+archivo.getOriginalFilename();
                 Path rutaDestino = Paths.get(RUTA_BASE).resolve(nuevoTitulo);
                 Files.copy(archivo.getInputStream(), rutaDestino, StandardCopyOption.REPLACE_EXISTING);
-
                 // Actualizar los campos de la imagen
                 imagenExistente.setTitulo(nuevoTitulo);
                 imagenExistente.setUrl_imagenPublicacion("imagesPublicaciones/" + nuevoTitulo);
             }
-
             // Guardar la imagen actualizada
             return imagenesPublicacionRepositorio.save(imagenExistente);
         } catch (IOException e) {

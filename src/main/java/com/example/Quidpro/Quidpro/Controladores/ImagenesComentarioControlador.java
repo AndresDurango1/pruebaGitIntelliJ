@@ -1,6 +1,8 @@
 package com.example.Quidpro.Quidpro.Controladores;
+import com.example.Quidpro.Quidpro.Entidades.Comentario;
 import com.example.Quidpro.Quidpro.Entidades.ImagenesComentario;
 import com.example.Quidpro.Quidpro.Excepciones.InvalidDataException;
+import com.example.Quidpro.Quidpro.Servicios.ComentarioServicio;
 import com.example.Quidpro.Quidpro.Servicios.ImagenesComentarioServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,8 +16,10 @@ import java.util.List;
 public class ImagenesComentarioControlador {
     @Autowired
     private final ImagenesComentarioServicio imagenesComentarioServicio;
-    public ImagenesComentarioControlador(ImagenesComentarioServicio imagenesComentarioServicio) {
+    private final ComentarioServicio comentarioServicio;
+    public ImagenesComentarioControlador(ImagenesComentarioServicio imagenesComentarioServicio, ComentarioServicio comentarioServicio) {
         this.imagenesComentarioServicio = imagenesComentarioServicio;
+        this.comentarioServicio = comentarioServicio;
     }
     //Metodo para consultar imagen de un comentario por id
     @GetMapping("/{id}")
@@ -39,9 +43,18 @@ public class ImagenesComentarioControlador {
     }
     //Metodo para guardar una imagen
     @PostMapping
-    public ResponseEntity<List<ImagenesComentario>> guardarImagenesComentario(@RequestParam("archivos") MultipartFile[] archivos){
+    public ResponseEntity<List<ImagenesComentario>> guardarImagenesComentario(
+            @PathVariable("idComentario") Integer idComentario,
+            @RequestParam("archivos") MultipartFile[] archivos
+    ){
         try {
-            List<ImagenesComentario> imagenesGuardadas = imagenesComentarioServicio.guardarImagenes(archivos);
+            // Obtener el comentario desde el servicio
+            Comentario comentario = comentarioServicio.consultarComentarioById(idComentario);
+            if(comentario == null){
+                return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            }
+            // Guardar las imágenes asociadas al comentario
+            List<ImagenesComentario> imagenesGuardadas = imagenesComentarioServicio.guardarImagenes(archivos, comentario);
             return new ResponseEntity<>(imagenesGuardadas, HttpStatus.CREATED);
         } catch (InvalidDataException e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -49,6 +62,7 @@ public class ImagenesComentarioControlador {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    /*
     //Metodo para actualizar una imagen por id
     @PutMapping("/{id}")
     public ResponseEntity<ImagenesComentario> actualizarImagen(@PathVariable int id, @RequestParam("archivo") MultipartFile archivo) {
@@ -60,15 +74,5 @@ public class ImagenesComentarioControlador {
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
-    //Metodo para eliminar imagenes por id
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> eliminarImagenPublicacion(@PathVariable Integer id){
-        try {
-            String mensaje = imagenesComentarioServicio.eliminarImagen(id);
-            return ResponseEntity.ok(mensaje);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Error al eliminar la imagen", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+    }*/
 }

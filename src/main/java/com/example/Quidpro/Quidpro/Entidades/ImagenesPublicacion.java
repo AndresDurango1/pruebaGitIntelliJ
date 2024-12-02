@@ -25,7 +25,7 @@ public class ImagenesPublicacion {
     public ImagenesPublicacion() {
     }
     //Metodo constructor con todos los atributos
-    public ImagenesPublicacion(int id, String titulo, String url_imagenPublicacion, Publicacion publicacion) {
+    public ImagenesPublicacion(Integer id, String titulo, String url_imagenPublicacion, Publicacion publicacion) {
         this.id = id;
         this.titulo = titulo;
         this.url_imagenPublicacion = url_imagenPublicacion;
