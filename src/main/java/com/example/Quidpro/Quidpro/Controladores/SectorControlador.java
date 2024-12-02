@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/sector")
+@RequestMapping("api/sectores")
 public class SectorControlador {
     @Autowired
     private final SectorServicio sectorServicio;
@@ -30,7 +30,7 @@ public class SectorControlador {
         List<Sector> sectores = sectorServicio.consultarSectores();
         return new ResponseEntity<>(sectores, HttpStatus.OK);
     }
-    //Metodo para guardar un nuevo departamento
+    //Metodo para guardar un nuevo sector
     @PostMapping
     public ResponseEntity<Sector> crearSector(@RequestBody Sector sector){
         Sector sectorGuardar = sectorServicio.crearSector(sector);

@@ -1,5 +1,9 @@
 package com.example.Quidpro.Quidpro.Entidades;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,8 +18,10 @@ public class Estados {
 
     /*RELACIONES DE MULTIPLICIDAD CON OTRAS CLASES*/
     //Relacion Uno a Muchos con la clase Emprendimiento
-    @OneToMany(targetEntity = Emprendimiento.class, fetch = FetchType.LAZY, mappedBy = "estado")
-    private List<Emprendimiento> emprendimientos;
+    @OneToMany(targetEntity = Emprendimiento.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "estado")
+    @JsonManagedReference
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private List<Emprendimiento> emprendimientos = new ArrayList<>();
     /*METODOS*/
     //Metodo constructor vacio
     public Estados(){
@@ -37,5 +43,13 @@ public class Estados {
     }
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+
+    public List<Emprendimiento> getEmprendimientos() {
+        return emprendimientos;
+    }
+
+    public void setEmprendimientos(List<Emprendimiento> emprendimientos) {
+        this.emprendimientos = emprendimientos;
     }
 }

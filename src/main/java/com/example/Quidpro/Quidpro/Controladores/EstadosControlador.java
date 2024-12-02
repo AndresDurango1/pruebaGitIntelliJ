@@ -32,13 +32,21 @@ public class EstadosControlador {
     }
     //Metodo para crear un estado
     @PostMapping
-    public ResponseEntity<Estados> crearEstado(@RequestBody Estados estados){
-        Estados estadoGuardar = estadosServicio.crearEstados(estados);
+    public ResponseEntity<Estados> crearEstado(
+            @RequestParam(name = "estado", required = true) String estadoValue
+    ){
+        Estados estadoNuevo = new Estados();
+        estadoNuevo.setEstado(estadoValue);
+        Estados estadoGuardar = estadosServicio.crearEstados(estadoNuevo);
         return new ResponseEntity<>(estadoGuardar, HttpStatus.CREATED);
     }
     //Metodo para actualizar un estado
     @PutMapping("/{id}")
-    public ResponseEntity<Estados> actualizarEstado(@PathVariable Integer id, @RequestBody Estados estado){
+    public ResponseEntity<Estados> actualizarEstado(
+            @PathVariable Integer id,
+            @RequestParam(name = "estado", required = true) String estadoValue){
+        Estados estado = new Estados();
+        estado.setEstado(estadoValue);
         Estados estadoActualizado = estadosServicio.actualizarEstado(id, estado);
         return new ResponseEntity<>(estadoActualizado, HttpStatus.OK);
     }

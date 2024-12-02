@@ -3,6 +3,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -35,13 +37,13 @@ public class Usuario {
     @OneToMany(targetEntity = Comentario.class, fetch = FetchType.LAZY,cascade = CascadeType.ALL, mappedBy = "usuario")
     @JsonManagedReference
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    private List<Comentario> comentarios;
+    private List<Comentario> comentarios = new ArrayList<>();
 
     //Relacion Uno a Muchos con la clase Publicacion
     @OneToMany(targetEntity = Publicacion.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "usuario")
     @JsonManagedReference
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    private List<Publicacion> publicaciones;
+    private List<Publicacion> publicaciones = new ArrayList<>();
 
     //Relacion Muchos a Uno con Entidad Rol
     @ManyToOne(targetEntity = Rol.class, fetch = FetchType.LAZY)

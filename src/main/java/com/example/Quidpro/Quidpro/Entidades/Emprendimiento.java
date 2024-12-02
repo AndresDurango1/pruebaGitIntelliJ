@@ -18,6 +18,8 @@ public class Emprendimiento {
     private String descripcion;
     @Column(nullable = false)
     private LocalDate fecha_creacion;
+    @Column(nullable = false)
+    private LocalDate fecha_actualizacion;
     /*RELACIONES DE MULTIPLICICAD CON LAS OTRAS CLASES*/
     //Relacion Muchos a Uno con la clase Ciudad
     @ManyToOne(targetEntity = Ciudad.class, fetch = FetchType.LAZY)
@@ -26,7 +28,7 @@ public class Emprendimiento {
     private Ciudad ciudad;
     //Relacion Muchos a Uno con la clase Estados
     @ManyToOne(targetEntity = Estados.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_estado")
+    @JoinColumn(name = "id_estado", nullable = false)
     @JsonIgnore
     private Estados estado;
     //Relacion Muchos a Muchos con la clase Sector
@@ -39,6 +41,7 @@ public class Emprendimiento {
     private Set<Sector> sectores = new HashSet<>();
     //Relacion Muchos a Muchos con la clase Usuario
     @ManyToMany
+    @JsonIgnore
     @JoinTable(
             name = "usuario_emprendimientos",
             joinColumns = @JoinColumn(name = "id_emprendimiento"),
@@ -50,11 +53,12 @@ public class Emprendimiento {
     public Emprendimiento() {
     }
     //Metodo constructor con todos los atributos
-    public Emprendimiento(int id, String nombre, String descripcion, LocalDate fecha_creacion, Ciudad ciudad, Estados estado) {
+    public Emprendimiento(int id, String nombre, String descripcion, LocalDate fecha_creacion, LocalDate fechaActualizacion, Ciudad ciudad, Estados estado) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.fecha_creacion = fecha_creacion;
+        fecha_actualizacion = fechaActualizacion;
         this.ciudad = ciudad;
         this.estado = estado;
     }
@@ -79,6 +83,12 @@ public class Emprendimiento {
     }
     public LocalDate getFecha_creacion() {
         return fecha_creacion;
+    }
+    public LocalDate getFecha_actualizacion() {
+        return fecha_actualizacion;
+    }
+    public void setFecha_actualizacion(LocalDate fecha_actualizacion) {
+        this.fecha_actualizacion = fecha_actualizacion;
     }
     public void setFecha_creacion(LocalDate fecha_creacion) {
         this.fecha_creacion = fecha_creacion;

@@ -71,7 +71,6 @@ public class PublicacionControlador {
             publicacion.setFecha_actualizacion(fecha_actualizacion);
             publicacion.setTag(tag);
             Publicacion publicacionGuardada = publicacionServicio.crearPublicacion(publicacion, idUsuario);
-
             if (imagenes != null) {
                 List<ImagenesPublicacion> imagenesGuardadas = imagenesPublicacionServicio.guardarImagenes(imagenes, publicacionGuardada);
                 publicacionGuardada.setImagenesPublicaciones(imagenesGuardadas);

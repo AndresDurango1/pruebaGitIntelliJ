@@ -77,9 +77,10 @@ public class UsuarioControlador {
             Usuario usuarioGuardado = usuarioServicio.crearUsuario(usuario, idCiudad, idRol, idImagen);
             return ResponseEntity.status(HttpStatus.CREATED).body(usuarioGuardado);
         } catch (Exception e) {
-            if (imagenesUsuario != null && imagenesUsuario.getId() != null) {
-                imagenesUsuarioServicio.eliminarImagen(imagenesUsuario.getId());
-            }
+//            if (imagenesUsuario != null && imagenesUsuario.getId() != null) {
+//                imagenesUsuarioServicio.eliminarImagen(imagenesUsuario.getId());
+//            }
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
