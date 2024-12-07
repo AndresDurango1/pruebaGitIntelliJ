@@ -110,7 +110,7 @@
         id="emprendedores"
         [items]="emprendedores"
         multiple
-        bindLabel="nombres"
+        bindLabel="nombreCompleto"
         bindValue="id"
         [searchable]="true">
       </ng-select>
@@ -154,17 +154,6 @@
         <div *ngIf="emprendimientoForm.get('estados')?.errors?.['atLeastOne']">Debe seleccionar el estado del emprendimiento</div>
       </div>
     </div>
-    <!-- Bloque de depuración -->
-    <div>
-      <h3>Depuración del Formulario:</h3>
-      <pre>{{ emprendimientoForm.value | json }}</pre>
-      <pre>{{ emprendimientoForm.status }}</pre>
-      <pre>{{ emprendimientoForm.errors | json }}</pre>
-      <pre>Emprendedores: {{ emprendimientoForm.get('emprendedores')?.errors | json }}</pre>
-      <pre>Sectores: {{ emprendimientoForm.get('sectores')?.errors | json }}</pre>
-      <pre>Estados: {{ emprendimientoForm.get('estados')?.errors | json }}</pre>
-    </div>
-
     <button
       class="btn btn-success"
       type="submit"

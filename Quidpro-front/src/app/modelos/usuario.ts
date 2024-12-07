@@ -4,8 +4,16 @@ export interface Usuario {
   apellidos: string;
   direccion: string;
   correo: string;
-  telefono: number[];
+  telefono: string[];
+  identificacion?: string;
+  usuario?: string;
+  contrasena?: string;
   idCiudad: number;
   idRol: number[];
-  imagen?: File;
+  imagenUsuario?: {
+    id: number;
+    titulo: string;
+    url_imagenUsuario: string;
+  };
+  nombreCompleto?: string;
 }
