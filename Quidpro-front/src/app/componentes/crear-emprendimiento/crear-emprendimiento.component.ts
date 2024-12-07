@@ -88,7 +88,11 @@ export class CrearEmprendimientoComponent implements OnInit {
   cargarEmprendedores() {
     this.usuariosService.getUsuarios().subscribe((data) => {
       console.log('Usuarios:', data);
-      this.emprendedores = data;
+      this.emprendedores = data.map((e: any) => ({
+        ...e,
+        nombreCompleto: `${e.nombres} ${e.apellidos}`
+      }));
+      console.log('Emprendedores procesados:', this.emprendedores);
     });
   }
   cargarSectores() {
@@ -103,33 +107,42 @@ export class CrearEmprendimientoComponent implements OnInit {
       this.estados = data;
     })
   }
-
   //Método para crear un nuevo emprendimiento en la base de datos
   crearEmprendimiento() {
     if (this.emprendimientoForm.valid) {
+      console.log('Valores del formulario:', this.emprendimientoForm.value);
+
       const formData = new FormData();
       formData.append('nombre', this.emprendimientoForm.get('nombre')?.value);
       formData.append('descripcion', this.emprendimientoForm.get('descripcion')?.value);
       formData.append('fecha_creacion', this.emprendimientoForm.get('fecha_creacion')?.value);
       formData.append('fecha_actualizacion', this.emprendimientoForm.get('fecha_actualizacion')?.value);
-      formData.append('idUsarios', this.emprendimientoForm.get('emprendedores')?.value);
       formData.append('idDepartamento', this.emprendimientoForm.get('departamento')?.value);
       formData.append('idCiudad', this.emprendimientoForm.get('ciudad')?.value);
-      formData.append('idSectores', this.emprendimientoForm.get('sectores')?.value);
-      formData.append('idEstado', this.emprendimientoForm.get('estados')?.value);
-      console.log('Form Data:', formData);
+
+      (this.emprendimientoForm.get('emprendedores')?.value || []).forEach((id: number) => {
+        formData.append('idUsuarios', id.toString());
+      });
+      (this.emprendimientoForm.get('sectores')?.value || []).forEach((id: number) => {
+        formData.append('idSectores', id.toString());
+      });
+      (this.emprendimientoForm.get('estados')?.value || []).forEach((id: number) => {
+        formData.append('idEstado', id.toString());
+      });
+
       this.emprendimientoService.createEmprendimiento(formData).subscribe(
         (response) => {
           console.log('Emprendimiento creado:', response);
+          alert('Emprendimiento creado con éxito');
         },
         (error) => {
           console.error('Error al crear el emprendimiento:', error);
+          alert('Error al crear el emprendimiento');
         }
       );
     } else {
       console.log('Formulario inválido:', this.emprendimientoForm);
     }
   }
-
 }
 

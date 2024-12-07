@@ -42,7 +42,8 @@ public class ImagenesPublicacionServicio {
             for (MultipartFile archivo : archivos) {
                 if (!archivo.isEmpty()) {
                     // Generar un título único para evitar conflictos de nombres
-                    String titulo = "publicacion_"+publicacion.getId()+"_"+archivo.getOriginalFilename();
+                    //String titulo = "publicacion_"+publicacion.getId()+"_"+archivo.getOriginalFilename(); /*nombre original de la imagen*/
+                    String titulo = UUID.randomUUID().toString() + "." + getExtension(archivo.getOriginalFilename()); /*nombre aleatorio*/
                     // Ruta de destino para guardar la imagen
                     Path rutaDestino = path.resolve(titulo);
                     Files.copy(archivo.getInputStream(), rutaDestino, StandardCopyOption.REPLACE_EXISTING);

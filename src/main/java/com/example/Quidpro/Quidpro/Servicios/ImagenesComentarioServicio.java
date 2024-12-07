@@ -14,6 +14,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 
 @Service
@@ -48,7 +49,8 @@ public class ImagenesComentarioServicio {
             for (MultipartFile archivo : archivos) {
                 if (!archivo.isEmpty()) {
                     // Generar un título único para evitar conflictos de nombres
-                    String titulo = "comentario_"+comentario.getId()+"_"+archivo.getOriginalFilename();
+                    //String titulo = "comentario_"+comentario.getId()+"_"+archivo.getOriginalFilename(); /*Nombre original de la imagen*/
+                    String titulo = UUID.randomUUID().toString() + "." + getExtension(archivo.getOriginalFilename()); /*Nombre aleatorio de la imagen*/
                     Path rutaDestino = path.resolve(titulo);
                     Files.copy(archivo.getInputStream(), rutaDestino, StandardCopyOption.REPLACE_EXISTING);
                     ImagenesComentario imagen = new ImagenesComentario();
