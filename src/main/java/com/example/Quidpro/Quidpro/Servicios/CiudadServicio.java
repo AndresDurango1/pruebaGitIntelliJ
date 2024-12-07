@@ -57,4 +57,12 @@ public class CiudadServicio {
         ciudadRepositorio.deleteById(id);
         return "Ciudad eliminada con éxito";
     }
+    // Metodo para Consultar Ciudades por ID de Departamento
+    public List<Ciudad> consultarCiudadesPorDepartamento(Integer idDepartamento) {
+        Departamento departamento = departamentoRepositorio.findById(idDepartamento)
+                .orElseThrow(() -> new RuntimeException("Departamento no encontrado con el ID: " + idDepartamento));
+        return ciudadRepositorio.findByDepartamento(departamento);
+    }
+
+
 }

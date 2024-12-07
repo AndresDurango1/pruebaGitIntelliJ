@@ -52,6 +52,9 @@ public class UsuarioControlador {
     public ResponseEntity<Usuario> crearUsuario(
             @RequestParam("nombres") String nombres,
             @RequestParam("apellidos") String apellidos,
+            @RequestParam("usuario") String usuario,
+            @RequestParam("contrasena") String contrasena,
+            @RequestParam("identificacion") String identificacion,
             @RequestParam("direccion") String direccion,
             @RequestParam("correo") String correo,
             @RequestParam("telefono") String telefono,
@@ -67,15 +70,18 @@ public class UsuarioControlador {
             imagenesUsuario = imagenesUsuarioServicio.guardarImagenes(imagen);
             Integer idImagen = imagenesUsuario.getId();
             // Crear el objeto Usuario manualmente
-            Usuario usuario = new Usuario();
-            usuario.setNombres(nombres);
-            usuario.setApellidos(apellidos);
-            usuario.setDireccion(direccion);
-            usuario.setCorreo(correo);
-            usuario.setTelefono(telefono);
-            usuario.setImagenUsuario(imagenesUsuario);
+            Usuario usuarioNuevo = new Usuario();
+            usuarioNuevo.setNombres(nombres);
+            usuarioNuevo.setApellidos(apellidos);
+            usuarioNuevo.setUsuario(usuario);
+            usuarioNuevo.setContrasena(contrasena);
+            usuarioNuevo.setIdentificacion(identificacion);
+            usuarioNuevo.setDireccion(direccion);
+            usuarioNuevo.setCorreo(correo);
+            usuarioNuevo.setTelefono(telefono);
+            usuarioNuevo.setImagenUsuario(imagenesUsuario);
 
-            Usuario usuarioGuardado = usuarioServicio.crearUsuario(usuario, idCiudad, idRol, idImagen);
+            Usuario usuarioGuardado = usuarioServicio.crearUsuario(usuarioNuevo, idCiudad, idRol, idImagen);
             return ResponseEntity.status(HttpStatus.CREATED).body(usuarioGuardado);
         } catch (Exception e) {
 //            if (imagenesUsuario != null && imagenesUsuario.getId() != null) {
@@ -91,6 +97,9 @@ public class UsuarioControlador {
             @PathVariable Integer id,
             @RequestParam(value = "nombres", required = false) String nombres,
             @RequestParam(value = "apellidos", required = false) String apellidos,
+            @RequestParam(value = "usuario", required = false) String usuario,
+            @RequestParam(value = "contrasena", required = false) String contrasena,
+            @RequestParam(value = "identificacion", required = false) String identificacion,
             @RequestParam(value = "direccion", required = false) String direccion,
             @RequestParam(value = "correo", required = false) String correo,
             @RequestParam(value = "telefono", required = false) String telefono,
@@ -112,6 +121,15 @@ public class UsuarioControlador {
             }
             if (apellidos != null) {
                 usuarioExistente.setApellidos(apellidos);
+            }
+            if (usuario != null) {
+                usuarioExistente.setUsuario(usuario);
+            }
+            if (contrasena != null) {
+                usuarioExistente.setContrasena(contrasena);
+            }
+            if (identificacion != null) {
+                usuarioExistente.setIdentificacion(identificacion);
             }
             if (direccion != null) {
                 usuarioExistente.setDireccion(direccion);

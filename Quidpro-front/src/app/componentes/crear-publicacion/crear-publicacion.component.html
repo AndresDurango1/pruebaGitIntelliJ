@@ -1,0 +1,132 @@
+<div class="contenedorFormulario">
+  <form [formGroup]="publicacionForm">
+    <!-- Titulo -->
+     <div>
+      <label for="titulo">Título</label>
+      <input
+        formControlName="titulo"
+        type="text"
+        class="form-control"
+        id="titulo"
+        required
+        minlength="10"
+        maxlength="50"
+        pattern="^[A-Za-z0-9\s.,;:!?@#$%&*()_\-+=\/']+$"
+      >
+      <div *ngIf="publicacionForm.get('titulo')?.invalid && (publicacionForm.get('titulo')?.dirty || publicacionForm.get('titulo')?.touched)" class="text-danger">
+        <div *ngIf="publicacionForm.get('titulo')?.errors?.['required']">El campo de título es requerido</div>
+        <div *ngIf="publicacionForm.get('titulo')?.errors?.['minlength']">El título debe tener al menos 10 caracteres</div>
+        <div *ngIf="publicacionForm.get('titulo')?.errors?.['maxlength']">El título debe tener menos de 50 caracteres</div>
+        <div *ngIf="publicacionForm.get('titulo')?.errors?.['pattern']">El título solo puede contener letras, números y caracteres especiales</div>
+      </div>
+     </div>
+    <!-- Descripción -->
+    <div>
+      <label for="descripcion">Descripción</label>
+      <input
+        formControlName="descripcion"
+        type="text"
+        class="form-control"
+        id="descripcion"
+        required
+        minlength="10"
+        maxlength="256"
+        pattern="^[A-Za-z0-9\s.,;:!?@#$%&*()_\-+=\/']+$"
+      >
+      <div *ngIf="publicacionForm.get('descripcion')?.invalid && (publicacionForm.get('descripcion')?.dirty || publicacionForm.get('descripcion')?.touched)" class="text-danger">
+        <div *ngIf="publicacionForm.get('descripcion')?.errors?.['required']">El campo de descripción es requerido</div>
+        <div *ngIf="publicacionForm.get('descripcion')?.errors?.['minlength']">La descripción debe tener al menos 10 caracteres</div>
+        <div *ngIf="publicacionForm.get('descripcion')?.errors?.['maxlength']">La descripción debe tener menos de 256 caracteres</div>
+        <div *ngIf="publicacionForm.get('descripcion')?.errors?.['pattern']">La descripción solo puede contener letras, números y caracteres especiales</div>
+      </div>
+    </div>
+    <!-- Fecha de creación -->
+    <div>
+      <label for="fecha_creacion">Fecha de creación</label>
+      <input
+        formControlName="fecha_creacion"
+        type="date" class="form-control"
+        id="fecha_creacion"
+        pattern="^\d{4}-\d{2}-\d{2}$"
+      >
+      <div *ngIf="publicacionForm.get('fecha_creacion')?.invalid && (publicacionForm.get('fecha_creacion')?.dirty || publicacionForm.get('fecha_creacion')?.touched)" class="text-danger">
+        <div *ngIf="publicacionForm.get('fecha_creacion')?.errors?.['pattern']">La fecha debe tener el formato YYYY-MM-DD</div>
+      </div>
+    </div>
+    <!-- Fecha de actualización -->
+    <div>
+      <label for="fecha_actualizacion">Fecha de actualización</label>
+      <input
+        formControlName="fecha_actualizacion"
+        type="date"
+        class="form-control"
+        id="fecha_actualizacion"
+        pattern="^\d{4}-\d{2}-\d{2}$"
+      >
+      <div *ngIf="publicacionForm.get('fecha_actualizacion')?.invalid && (publicacionForm.get('fecha_actualizacion')?.dirty || publicacionForm.get('fecha_actualizacion')?.touched)" class="text-danger">
+        <div *ngIf="publicacionForm.get('fecha_actualizacion')?.errors?.['pattern']">La fecha debe tener el formato YYYY-MM-DD</div>
+      </div>
+    </div>
+     <!-- Tag -->
+      <div>
+        <label for="tag">Tag</label>
+        <input
+          formControlName="tag"
+          class="form-control"
+          type="text"
+          id="tag"
+          required
+          pattern="^#(\w+\s*)+"
+          placeholder="#Tecnología #Alimentos #Ganadería"
+        >
+        <div *ngIf="publicacionForm.get('tag')?.invalid && (publicacionForm.get('tag')?.dirty || publicacionForm.get('tag')?.touched)" class="text-danger">
+          <div *ngIf="publicacionForm.get('tag')?.errors?.['required']">El tag es requerido</div>
+          <div *ngIf="publicacionForm.get('tag')?.errors?.['pattern']">El tag debe tener el formato #tag1 #tag2 #tag3</div>
+        </div>
+      </div>
+      <!-- Usuario -->
+     <div>
+      <label for="usuario">Usuario</label>
+      <select
+        formControlName="usuario"
+        class="form-control"
+        id="usuario"
+        required
+      >
+       <option value="" disabled selected>Seleccione un usuario</option>
+       <option *ngFor="let usuario of usuarios" [value]="usuario.id">
+        {{ usuario.nombres }}
+        </option>
+      </select>
+      <div *ngIf="publicacionForm.get('usuario')?.invalid && (publicacionForm.get('usuario')?.dirty || publicacionForm.get('usuario')?.touched)" class="text-danger">
+        <div *ngIf="publicacionForm.get('usuario')?.errors?.['required']">El usuario es requerido</div>
+      </div>
+     </div>
+     <!-- Imagenes -->
+    <div>
+      <label for="imagenes">Imagenes</label>
+      <input
+        type="file"
+        multiple
+        accept="image/jpeg, image/png, image/webp"
+        class="form-control"
+        id="imagenes"
+        required
+        (change)="onFileChange($event)"
+      >
+      <div *ngIf="imagenes && imagenes.length > 0">
+        <p>Imágenes seleccionadas:</p>
+        <ul>
+          <li *ngFor="let imagen of imagenes">{{ imagen.name }}</li>
+        </ul>
+      </div>
+      <div *ngIf="previews && previews.length > 0">
+        <p>Previsualización:</p>
+        <div *ngFor="let preview of previews">
+          <img [src]="preview" alt="Imagen seleccionada" style="width: 150px; margin: 10px;" />
+        </div>
+      </div>
+    </div>
+     <button class="btn btn-success" type="submit" [disabled]="publicacionForm.invalid">Crear Publicacion</button>
+  </form>
+</div>

@@ -22,6 +22,7 @@ public class Comentario {
     /*RELACIONES DE MULTIPLICIDAD CON OTRAS CLASES*/
     //Relacion Uno a Muchos con la clase ImagenesComentario
     @OneToMany(targetEntity = ImagenesComentario.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "comentario")
+    @JsonIgnore
     private List<ImagenesComentario> imagenesComentarios;
 
     //Relacion Muchos a Uno con la clase Usuario

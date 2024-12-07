@@ -3,11 +3,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import java.util.*;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "usuarios")
@@ -26,6 +23,13 @@ public class Usuario {
     private String correo;
     @Column(nullable = false, length = 50)
     private String telefono;
+    @Column(nullable = false, length =  256)
+    private String contrasena;
+    @Column(nullable = false, length =  50)
+    private String usuario;
+    @Column(nullable = false, length =  256)
+    private String identificacion;
+
     //Relacion Uno a Uno con la clase ImagenesUsuario
     @OneToOne(targetEntity = ImagenesUsuario.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_imagenUsuario")
@@ -66,13 +70,16 @@ public class Usuario {
     public Usuario() {
     }
     //Metodo constructo con todos los atributos
-    public Usuario(int id, String nombres, String apellidos, String direccion, String correo, String telefono, ImagenesUsuario imagenUsuario, Ciudad ciudad, Rol rol) {
+    public Usuario(int id, String nombres, String apellidos, String direccion, String correo, String telefono, String contrasena, String usuario, String identificacion, ImagenesUsuario imagenUsuario, Ciudad ciudad, Rol rol) {
         this.id = id;
         this.nombres = nombres;
         this.apellidos = apellidos;
         this.direccion = direccion;
         this.correo = correo;
         this.telefono = telefono;
+        this.contrasena = contrasena;
+        this.usuario = usuario;
+        this.identificacion = identificacion;
         this.imagenUsuario = imagenUsuario;
         this.ciudad = ciudad;
         this.rol = rol;
@@ -84,70 +91,91 @@ public class Usuario {
     public void setId(int id) {
         this.id = id;
     }
+
     public String getNombres() {
         return nombres;
     }
     public void setNombres(String nombres) {
         this.nombres = nombres;
     }
+
     public String getApellidos() {
         return apellidos;
     }
     public void setApellidos(String apellidos) {
         this.apellidos = apellidos;
     }
+
     public String getDireccion() {
         return direccion;
     }
     public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
+
     public String getCorreo() {
         return correo;
     }
     public void setCorreo(String correo) {
         this.correo = correo;
     }
+
     public String getTelefono() {
         return telefono;
     }
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
+
     public Ciudad getCiudad() {
         return ciudad;
     }
     public void setCiudad(Ciudad ciudad) {
         this.ciudad = ciudad;
     }
+
     public List<Comentario> getComentarios() {
         return comentarios;
     }
     public void setComentarios(List<Comentario> comentarios) {
         this.comentarios = comentarios;
     }
+
     public List<Publicacion> getPublicaciones() {
         return publicaciones;
     }
     public void setPublicaciones(List<Publicacion> publicaciones) {
         this.publicaciones = publicaciones;
     }
+
     public ImagenesUsuario getImagenUsuario() {
         return imagenUsuario;
     }
     public void setImagenUsuario(ImagenesUsuario imagenUsuario) {
         this.imagenUsuario = imagenUsuario;
     }
+
     public Rol getRol() {
         return rol;
     }
     public void setRol(Rol rol) {
         this.rol = rol;
     }
+
     public Set<Emprendimiento> getEmprendimientos() {
         return emprendimientos;
     }
     public void setEmprendimientos(Set<Emprendimiento> emprendimientos) {
         this.emprendimientos = emprendimientos;
     }
+
+    public String getContrasena() {return contrasena;}
+    public void setContrasena(String contrasena) {this.contrasena = contrasena;}
+
+    public String getUsuario() {return usuario;}
+    public void setUsuario(String usuario) {this.usuario = usuario;}
+
+    public String getIdentificacion() {return identificacion;}
+    public void setIdentificacion(String identificacion) {this.identificacion = identificacion;}
+
 }

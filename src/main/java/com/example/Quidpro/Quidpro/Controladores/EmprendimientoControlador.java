@@ -45,7 +45,7 @@ public class EmprendimientoControlador {
         return new ResponseEntity<List<Emprendimiento>>(emprendimientos, HttpStatus.OK);
     }
     //Metodo para crear un emprendimiento
-    @PostMapping
+    @PostMapping(consumes = "multipart/form-data")
     public ResponseEntity<Emprendimiento> crearEmprendimiento(
             @RequestParam(name = "nombre", required = true) String nombre,
             @RequestParam(name = "descripcion", required = true) String descripcion,

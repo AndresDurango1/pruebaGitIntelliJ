@@ -29,6 +29,10 @@ public class CiudadControlador {
         List<Ciudad> ciudades = ciudadServicio.consultarCiudades();
         return ResponseEntity.ok(ciudades);
     }
+    @GetMapping("/por-departamento/{idDepartamento}")
+    public List<Ciudad> obtenerCiudadesPorDepartamento(@PathVariable Integer idDepartamento) {
+        return ciudadServicio.consultarCiudadesPorDepartamento(idDepartamento);
+    }
     // Crear Ciudad
     @PostMapping
     public ResponseEntity<Ciudad> crearCiudad(@RequestBody Ciudad ciudad, @RequestParam Integer idDepartamento) {

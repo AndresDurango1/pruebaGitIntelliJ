@@ -1,0 +1,10 @@
+@font-face {
+  font-family: "Cronos Pro";
+  src: url("../../../tipografia/Cronospro.ttf");
+}
+*{
+  margin: 0%;
+  padding: 0%;
+  box-sizing: border-box;
+  font-family: 'Cronos pro','Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}

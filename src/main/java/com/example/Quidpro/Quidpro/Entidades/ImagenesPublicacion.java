@@ -1,5 +1,7 @@
 package com.example.Quidpro.Quidpro.Entidades;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 @Entity
@@ -17,7 +19,8 @@ public class ImagenesPublicacion {
     //Relacion Muchos a uno con la tabla Publicacion
     @ManyToOne(targetEntity = Publicacion.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_publicacion", nullable = false)
-    @JsonIgnore
+    //@JsonIgnore
+    @JsonIgnoreProperties("imagenesPublicaciones")
     private Publicacion publicacion;
 
     /*METODOS*/

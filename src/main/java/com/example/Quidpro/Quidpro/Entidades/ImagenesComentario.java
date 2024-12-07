@@ -13,7 +13,8 @@ public class ImagenesComentario {
     private String titulo;
     @Column(nullable = false, length = 256)
     private String url_imagenComentario;
-    //Relacion Muchos a uno con la tabla Publicacion
+
+    //Relacion Muchos a uno con la tabla Comentario
     @ManyToOne(targetEntity = Comentario.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_comentario", nullable = false)
     @JsonIgnore

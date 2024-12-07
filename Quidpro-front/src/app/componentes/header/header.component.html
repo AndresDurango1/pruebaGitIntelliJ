@@ -1,0 +1,27 @@
+<header>
+  <div class="contenedorPrincipal">
+    <div class="contenedorLogo">
+      <img src="img/logo.png" alt="">
+    </div>
+    <div class="contenedorContenido">
+      <div class="filaSuperior">
+        <div class="titulo">
+          <h1>QuidPro</h1>
+          <p>Ecosistema digital de colaboración para PYMES</p>
+        </div>
+        <div class="botones">
+          <button class="btnLogin" [routerLink]="['/iniciar-sesion']">Log in</button>
+          <button class="btnRegistro">Get Started</button>
+        </div>
+      </div>
+      <div class="filaInferior">
+        <nav class="navbar">
+          <a routerLink="/" routerLinkActive="active" class="btnNavbar">Inicio</a>
+          <a routerLink="/usuarios" routerLinkActive="active" class="btnNavbar">Usuarios</a>
+          <a routerLink="/emprendimientos" routerLinkActive="active" class="btnNavbar">Emprendimientos</a>
+          <a routerLink="/publicaciones" routerLinkActive="active" class="btnNavbar">Publicaciones</a>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>

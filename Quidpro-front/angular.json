@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "Quidpro-front": {
+    "quidpro-frontc": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -23,7 +23,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/quidpro-front",
+            "outputPath": "dist/quidpro-frontc",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -74,10 +74,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "Quidpro-front:build:production"
+              "buildTarget": "quidpro-frontc:build:production"
             },
             "development": {
-              "buildTarget": "Quidpro-front:build:development"
+              "buildTarget": "quidpro-frontc:build:development"
             }
           },
           "defaultConfiguration": "development"

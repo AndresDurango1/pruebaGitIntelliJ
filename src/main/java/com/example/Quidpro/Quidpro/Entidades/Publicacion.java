@@ -1,7 +1,6 @@
 package com.example.Quidpro.Quidpro.Entidades;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -32,8 +31,9 @@ public class Publicacion {
 
     //Relacion Uno a Muchos con la clase ImagenPublicacion
     @OneToMany(targetEntity = ImagenesPublicacion.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "publicacion")
-    @JsonManagedReference
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    //@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    //@JsonIgnore
+    @JsonIgnoreProperties("publicacion")
     private List<ImagenesPublicacion> imagenesPublicaciones = new ArrayList<>();
 
     //Relacion Muchos a Uno con la clase Usuario

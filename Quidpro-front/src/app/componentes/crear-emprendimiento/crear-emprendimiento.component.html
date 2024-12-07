@@ -1,0 +1,176 @@
+<div class="contenedorFormulario">
+  <form [formGroup]="emprendimientoForm" (ngSubmit)="crearEmprendimiento()" novalidate>
+    <!-- Nombre -->
+    <div>
+      <label for="nombre">Nombre</label>
+      <input
+        formControlName="nombre"
+        type="text"
+        class="form-control"
+        id="nombre"
+        required
+        minlength="2"
+        maxlength="50"
+        pattern="[A-Za-z\s]+"
+        title="Solo se permiten letras"
+      >
+      <div *ngIf="emprendimientoForm.get('nombre')?.invalid && (emprendimientoForm.get('nombre')?.dirty || emprendimientoForm.get('nombre')?.touched)" class="text-danger">
+        <div *ngIf="emprendimientoForm.get('nombre')?.errors?.['required']">El campo de nombre es requerido</div>
+        <div *ngIf="emprendimientoForm.get('nombre')?.errors?.['minlength']">El nombre debe tener al menos 2 caracteres</div>
+        <div *ngIf="emprendimientoForm.get('nombre')?.errors?.['maxlength']">El nombre debe tener menos de 20 caracteres</div>
+      </div>
+    </div>
+    <!-- Descripción -->
+    <div>
+      <label for="descripcion">Descripción:</label>
+      <input
+        formControlName="descripcion"
+        type="text"
+        class="form-control"
+        id="descripcion"
+        required minlength="2"
+        maxlength="256"
+        pattern="^[A-Za-z0-9\s.,;:!?@#$%&*()_\-+=\/']+$"
+      >
+      <div *ngIf="emprendimientoForm.get('descripcion')?.invalid && (emprendimientoForm.get('descripcion')?.dirty || emprendimientoForm.get('descripcion')?.touched)" class="text-danger">
+        <div *ngIf="emprendimientoForm.get('descripcion')?.errors?.['required']">La descripción es requerida</div>
+        <div *ngIf="emprendimientoForm.get('descripcion')?.errors?.['minlength']">La descripción debe tener al menos 2 caracteres</div>
+        <div *ngIf="emprendimientoForm.get('descripcion')?.errors?.['maxlength']">La descripción debe tener menos de 256 caracteres</div>
+        <div *ngIf="emprendimientoForm.get('descripcion')?.errors?.['pattern']">La descripción solo puede contener letras, números y caracteres especiales</div>
+      </div>
+    </div>
+    <!-- Fecha de creación -->
+    <div>
+      <label for="fecha_creacion">Fecha de creación</label>
+      <input
+        formControlName="fecha_creacion"
+        type="date"
+        class="form-control"
+        id="fecha_creacion"
+        pattern="^\d{4}-\d{2}-\d{2}$">
+      <div *ngIf="emprendimientoForm.get('fecha_creacion')?.invalid && (emprendimientoForm.get('fecha_creacion')?.dirty || emprendimientoForm.get('fecha_creacion')?.touched)" class="text-danger">
+        <div *ngIf="emprendimientoForm.get('fecha_creacion')?.errors?.['pattern']">La fecha debe tener el formato YYYY-MM-DD</div>
+      </div>
+    </div>
+    <!-- Fecha de actualización -->
+    <div>
+      <label for="fecha_actualizacion">Fecha de actualización</label>
+      <input
+        formControlName="fecha_actualizacion"
+        type="date"
+        class="form-control"
+        id="fecha_actualizacion"
+        pattern="^\d{4}-\d{2}-\d{2}$">
+      <div *ngIf="emprendimientoForm.get('fecha_actualizacion')?.invalid && (emprendimientoForm.get('fecha_actualizacion')?.dirty || emprendimientoForm.get('fecha_actualizacion')?.touched)" class="text-danger">
+        <div *ngIf="emprendimientoForm.get('fecha_actualizacion')?.errors?.['pattern']">La fecha debe tener el formato YYYY-MM-DD</div>
+      </div>
+    </div>
+    <!-- Departamento -->
+    <div>
+      <label for="departamento">Departamento</label>
+      <select
+        formControlName="departamento"
+        (change)="onDepartamentoChange()"
+        class="form-control" id="departamento"
+        required
+      >
+        <option value="" disabled selected>Seleccione un departamento</option>
+        <option *ngFor="let departamento of departamentos" [value]="departamento.id">
+          {{ departamento.departamento }}
+        </option>
+      </select>
+      <div
+        *ngIf="emprendimientoForm.get('departamento')?.invalid && (emprendimientoForm.get('departamento')?.dirty || emprendimientoForm.get('departamento')?.touched)"
+        class="text-danger">
+        <div *ngIf="emprendimientoForm.get('departamento')?.errors?.['required']">El departamento es requerido</div>
+      </div>
+    </div>
+    <!-- Ciudad -->
+    <div>
+      <label for="ciudad">Ciudad</label>
+      <select
+        formControlName="ciudad"
+        class="form-control"
+        id="ciudad"
+        required
+      >
+        <option value="" disabled selected>Seleccione una ciudad</option>
+        <option *ngFor="let ciudad of ciudades" [value]="ciudad.id">{{ ciudad.ciudad }}</option>
+      </select>
+      <div *ngIf="emprendimientoForm.get('ciudad')?.invalid && (emprendimientoForm.get('ciudad')?.dirty || emprendimientoForm.get('ciudad')?.touched)" class="text-danger">
+        <div *ngIf="emprendimientoForm.get('ciudad')?.errors?.['required']">La ciudad es requerida</div>
+      </div>
+    </div>
+    <!-- Emprendedor(es) -->
+    <div>
+      <label for="emprendedores">Emprendedor(es)</label>
+      <ng-select
+        formControlName="emprendedores"
+        class="form-control"
+        id="emprendedores"
+        [items]="emprendedores"
+        multiple
+        bindLabel="nombres"
+        bindValue="id"
+        [searchable]="true">
+      </ng-select>
+      <div *ngIf="emprendimientoForm.get('emprendedores')?.invalid && (emprendimientoForm.get('emprendedores')?.dirty || emprendimientoForm.get('emprendedores')?.touched)" class="text-danger">
+        <div *ngIf="emprendimientoForm.get('emprendedores')?.errors?.['atLeastOne']">Seleccione al menos un emprendedor</div>
+      </div>
+    </div>
+    <!-- Sectores -->
+    <div>
+      <label for="sectores">Sector(es)</label>
+      <ng-select
+        formControlName="sectores"
+        class="form-control"
+        id="sectores"
+        [items]="sectores"
+        multiple
+        bindLabel="sector"
+        bindValue="id"
+        [searchable]="true"
+      >
+      </ng-select>
+      <div *ngIf="emprendimientoForm.get('sectores')?.invalid && (emprendimientoForm.get('sectores')?.dirty || emprendimientoForm.get('sectores')?.touched)" class="text-danger">
+        <div *ngIf="emprendimientoForm.get('sectores')?.errors?.['atLeastOne']">Seleccione al menos un sector</div>
+      </div>
+    </div>
+    <!-- Estados -->
+    <div>
+      <label for="estados">Estado</label>
+      <ng-select
+        formControlName="estados"
+        class="form-control"
+        id="estados"
+        [items]="estados"
+        multiple
+        bindLabel="estado"
+        bindValue="id"
+        [searchable]="true"
+      >
+      </ng-select>
+      <div *ngIf="emprendimientoForm.get('estados')?.invalid && (emprendimientoForm.get('estados')?.dirty || emprendimientoForm.get('estados')?.touched)" class="text-danger">
+        <div *ngIf="emprendimientoForm.get('estados')?.errors?.['atLeastOne']">Debe seleccionar el estado del emprendimiento</div>
+      </div>
+    </div>
+    <!-- Bloque de depuración -->
+    <div>
+      <h3>Depuración del Formulario:</h3>
+      <pre>{{ emprendimientoForm.value | json }}</pre>
+      <pre>{{ emprendimientoForm.status }}</pre>
+      <pre>{{ emprendimientoForm.errors | json }}</pre>
+      <pre>Emprendedores: {{ emprendimientoForm.get('emprendedores')?.errors | json }}</pre>
+      <pre>Sectores: {{ emprendimientoForm.get('sectores')?.errors | json }}</pre>
+      <pre>Estados: {{ emprendimientoForm.get('estados')?.errors | json }}</pre>
+    </div>
+
+    <button
+      class="btn btn-success"
+      type="submit"
+      [disabled]="emprendimientoForm.invalid"
+    >
+      Crear Emprendimiento
+    </button>
+  </form>
+</div>

@@ -48,7 +48,7 @@ public class PublicacionControlador {
     public ResponseEntity<Publicacion> crearPublicacion(
             @RequestParam("titulo") String titulo,
             @RequestParam("descripcion") String descripcion,
-            @RequestParam("fecha_creacion") LocalDate fecha_creacion,
+            @RequestParam(value = "fecha_creacion", required = false) LocalDate fecha_creacion,
             @RequestParam(value = "fecha_actualizacion", required = false) LocalDate fecha_actualizacion,
             @RequestParam("tag") String tag,
             @RequestParam Integer idUsuario,
@@ -88,6 +88,7 @@ public class PublicacionControlador {
             @PathVariable Integer id,
             @RequestParam("titulo") String titulo,
             @RequestParam("descripcion") String descripcion,
+            //@RequestParam(value = "fecha_creacion", required = false) LocalDate fecha_creacion,
             @RequestParam(value = "fecha_actualizacion", required = false) LocalDate fecha_actualizacion,
             @RequestParam("tag") String tag,
             @RequestParam Integer idUsuario,

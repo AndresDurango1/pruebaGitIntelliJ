@@ -1,0 +1,11 @@
+{
+  "message": "Autenticacioón ok",
+  "id": "1",
+  "nombres": "Andres",
+  "apellidos": "Aguilar",
+  "direccion": "Calle 123",
+  "correo": "andres@gmail.com",
+  "telefono": "1234567890",
+  "idCiudad": "1",
+  "idRol": "1"
+}

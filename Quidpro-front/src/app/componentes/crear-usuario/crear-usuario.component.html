@@ -1,0 +1,254 @@
+<div class="contenedorFormulario">
+  <form [formGroup]="usuarioForm" (ngSubmit)="crearUsuario()" novalidate>
+    <!-- Nombres -->
+    <div>
+      <label for="nombres">Nombres:</label>
+      <input
+        formControlName="nombres"
+        type="text"
+        class="form-control"
+        id="nombres"
+        required
+        minlength="2"
+        maxlength="50"
+        pattern="^[A-Za-z]+( [A-Za-z]+)*$"
+        title="Solo se permiten letras"
+      >
+        <div *ngIf="usuarioForm.get('nombres')?.invalid && (usuarioForm.get('nombres')?.dirty || usuarioForm.get('nombres')?.touched)" class="text-danger">
+          <div *ngIf="usuarioForm.get('nombres')?.errors?.['required']">El campo de nombres es requerido</div>
+          <div *ngIf="usuarioForm.get('nombres')?.errors?.['minlength']">El nombre debe tener al menos 2 caracteres</div>
+          <div *ngIf="usuarioForm.get('nombres')?.errors?.['maxlength']">El nombre debe tener menos de 20 caracteres</div>
+          <div *ngIf="usuarioForm.get('nombres')?.errors?.['pattern']">El nombre solo puede contener letras</div>
+        </div>
+    </div>
+    <!-- Apellidos -->
+    <div>
+      <label for="apellidos">Apellidos:</label>
+      <input
+        formControlName="apellidos"
+        type="text"
+        class="form-control"
+        id="apellidos"
+        required
+        minlength="2"
+        maxlength="50"
+        pattern="^[A-Za-z]+( [A-Za-z]+)*$"
+        title="Solo se permiten letras"
+      >
+      <div *ngIf="usuarioForm.get('apellidos')?.invalid && (usuarioForm.get('apellidos')?.dirty || usuarioForm.get('apellidos')?.touched)" class="text-danger">
+        <div *ngIf="usuarioForm.get('apellidos')?.errors?.['required']">El campo de apellidos es requerido</div>
+        <div *ngIf="usuarioForm.get('apellidos')?.errors?.['minlength']">Los apellidos deben tener al menos 2 caracteres</div>
+        <div *ngIf="usuarioForm.get('apellidos')?.errors?.['maxlength']">Los apellidos deben tener menos de 50 caracteres</div>
+      </div>
+    </div>
+    <!-- Usuario -->
+    <div>
+      <label for="usuario">Usuario:</label>
+      <input
+        formControlName="usuario"
+        type="text"
+        class="form-control"
+        id="usuario"
+        required
+        minlength="5"
+        maxlength="50"
+        pattern="[A-Za-z0-9]+"
+        title="Solo se permiten letras y numeros"
+      >
+      <div *ngIf="usuarioForm.get('usuario')?.invalid && (usuarioForm.get('usuario')?.dirty || usuarioForm.get('usuario')?.touched)" class="text-danger">
+        <div *ngIf="usuarioForm.get('usuario')?.errors?.['required']">El usuario es requerido</div>
+        <div *ngIf="usuarioForm.get('usuario')?.errors?.['minlength']">El usuario debe tener al menos 5 caracteres</div>
+        <div *ngIf="usuarioForm.get('usuario')?.errors?.['maxlength']">El usuario debe tener menos de 50 caracteres</div>
+        <div *ngIf="usuarioForm.get('usuario')?.errors?.['pattern']">El usuario solo puede contener letras y números</div>
+      </div>
+    </div>
+    <!-- Contrasena -->
+    <div>
+      <label for="contrasena">Contraseña:</label>
+      <input
+        formControlName="contrasena"
+        type="password"
+        class="form-control"
+        id="contrasena"
+        required
+        minlength="8"
+        maxlength="20"
+        pattern="[A-Za-z0-9\s\W]+"
+        title="En la contraseña se permiten letras, numeros y caracteres especiales"
+      >
+      <div *ngIf="usuarioForm.get('contrasena')?.invalid && (usuarioForm.get('contrasena')?.dirty || usuarioForm.get('contrasena')?.touched)" class="text-danger">
+        <div *ngIf="usuarioForm.get('contrasena')?.errors?.['required']">La contraseña es requerida</div>
+        <div *ngIf="usuarioForm.get('contrasena')?.errors?.['minlength']">La contraseña debe tener al menos 8 caracteres</div>
+        <div *ngIf="usuarioForm.get('contrasena')?.errors?.['maxlength']">La contraseña debe tener menos de 20 caracteres</div>
+      </div>
+    </div>
+    <!-- Identificacion -->
+    <div>
+      <label for="identificacion">Identificacion:</label>
+      <input
+        formControlName="identificacion"
+        type="text"
+        class="form-control"
+        id="identificacion"
+        required
+        minlength="2"
+        maxlength="15"
+        pattern="[0-9]+"
+        title="Solo se permiten numeros"
+      >
+      <div *ngIf="usuarioForm.get('identificacion')?.invalid && (usuarioForm.get('identificacion')?.dirty || usuarioForm.get('identificacion')?.touched)" class="text-danger">
+        <div *ngIf="usuarioForm.get('identificacion')?.errors?.['required']">El número de identificación es requerido</div>
+        <div *ngIf="usuarioForm.get('identificacion')?.errors?.['minlength']">El número de identificación debe tener al menos 2 caracteres</div>
+        <div *ngIf="usuarioForm.get('identificacion')?.errors?.['maxlength']">El número de identificación debe tener menos de 15 caracteres</div>
+        <div *ngIf="usuarioForm.get('identificacion')?.errors?.['pattern']">El número de identificación solo puede contener números</div>
+      </div>
+    </div>
+    <!-- Direccion -->
+    <div>
+      <label for="direccion">Dirección:</label>
+      <input
+        formControlName="direccion"
+        type="text"
+        class="form-control"
+        id="direccion"
+        required
+        minlength="2"
+        maxlength="50"
+        pattern="[A-Za-z0-9\W]+"
+        title="Se permiten letras, numeros y caracteres especiales"
+      >
+      <div *ngIf="usuarioForm.get('direccion')?.invalid && (usuarioForm.get('direccion')?.dirty || usuarioForm.get('direccion')?.touched)" class="text-danger">
+        <div *ngIf="usuarioForm.get('direccion')?.errors?.['required']">La dirección de residencia es requerida</div>
+        <div *ngIf="usuarioForm.get('direccion')?.errors?.['minlength']">La dirección debe tener al menos 2 caracteres</div>
+        <div *ngIf="usuarioForm.get('direccion')?.errors?.['maxlength']">La dirección debe tener menos de 50 caracteres</div>
+        <div *ngIf="usuarioForm.get('direccion')?.errors?.['pattern']">La dirección solo puede contener letras, números y caracteres especiales</div>
+      </div>
+    </div>
+    <!-- Correo -->
+    <div>
+      <label for="correo">Correo:</label>
+      <input
+        formControlName="correo"
+        type="email"
+        class="form-control"
+        id="correo"
+        required
+        email
+        pattern="[a-zAA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+        title="El correo debe tener el formato correo&#64;example.com"
+      >
+      <div *ngIf="usuarioForm.get('correo')?.invalid && (usuarioForm.get('correo')?.dirty || usuarioForm.get('correo')?.touched)" class="text-danger">
+        <div *ngIf="usuarioForm.get('correo')?.errors?.['required']">El correo electrónico es requerido</div>
+        <div *ngIf="usuarioForm.get('correo')?.errors?.['pattern']">El correo debe tener el formato válido: correo&#64;example.com</div>
+      </div>
+    </div>
+    <!-- Telefono -->
+    <div>
+      <label for="telefono">Teléfono:</label>
+      <input
+        formControlName="telefono"
+        type="text"
+        class="form-control"
+        id="telefono"
+        required
+        minlength="7"
+        maxlength="10"
+        pattern="^[0-9]{10}$"
+        title="Solo se permiten numeros"
+      >
+      <div *ngIf="usuarioForm.get('telefono')?.invalid && (usuarioForm.get('telefono')?.dirty || usuarioForm.get('telefono')?.touched)" class="text-danger">
+        <div *ngIf="usuarioForm.get('telefono')?.errors?.['required']">El teléfono es requerido</div>
+        <div *ngIf="usuarioForm.get('telefono')?.errors?.['minlength']">El teléfono debe tener al menos 7 caracteres</div>
+        <div *ngIf="usuarioForm.get('telefono')?.errors?.['maxlength']">El teléfono debe tener menos de 10 caracteres</div>
+        <div *ngIf="usuarioForm.get('telefono')?.errors?.['pattern']">El teléfono solo puede contener números</div>
+      </div>
+    </div>
+    <!-- Departamento -->
+    <div>
+      <label for="departamento">Departamento</label>
+      <select
+        formControlName="departamento"
+        (change)="onDepartamentoChange()"
+        class="form-control"
+        id="departamento"
+        required
+      >
+        <option value="" disabled selected>Seleccione un departamento</option>
+        <option *ngFor="let departamento of departamentos" [value]="departamento.id">
+          {{ departamento.departamento }}
+        </option>
+      </select>
+      <div *ngIf="usuarioForm.get('departamento')?.invalid && (usuarioForm.get('departamento')?.dirty || usuarioForm.get('departamento')?.touched)" class="text-danger">
+        <div *ngIf="usuarioForm.get('departamento')?.errors?.['required']">El departamento es requerido</div>
+      </div>
+    </div>
+    <!-- Ciudad -->
+    <div>
+      <label for="ciudad">Ciudad</label>
+      <select
+        formControlName="ciudad"
+        class="form-control"
+        id="ciudad"
+        required
+      >
+        <option value="" disabled selected>Seleccione una ciudad</option>
+        <option *ngFor="let ciudad of ciudades" [value]="ciudad.id">{{ ciudad.ciudad }}</option>
+      </select>
+      <div *ngIf="usuarioForm.get('ciudad')?.invalid && (usuarioForm.get('ciudad')?.dirty || usuarioForm.get('ciudad')?.touched)" class="text-danger">
+        <div *ngIf="usuarioForm.get('ciudad')?.errors?.['required']">La ciudad es requerida</div>
+      </div>
+    </div>
+    <!-- Rol -->
+    <div>
+      <label for="rol">Rol</label>
+      <select
+        formControlName="rol"
+        class="form-control"
+        id="rol"
+        required
+      >
+        <option value="" disabled selected>Seleccione un rol</option>
+        <option *ngFor="let rol of roles" [value]="rol.id">
+          {{ rol.rol }}
+        </option>
+      </select>
+      <div *ngIf="usuarioForm.get('rol')?.invalid && (usuarioForm.get('rol')?.dirty || usuarioForm.get('rol')?.touched)" class="text-danger">
+        <div *ngIf="usuarioForm.get('rol')?.errors?.['required']">El rol es requerido</div>
+      </div>
+    </div>
+    <!-- Imagen -->
+    <div>
+      <label for="imagen">Imagen:</label>
+      <input
+        formControlName="imagen"
+        class="form-control"
+        id="imagen"
+        type="file"
+        (change)="onFileChange($event)"
+        required
+      >
+      <div *ngIf="usuarioForm.get('imagen')?.invalid && (usuarioForm.get('imagen')?.dirty || usuarioForm.get('imagen')?.touched)" class="text-danger">
+        <div *ngIf="usuarioForm.get('imagen')?.errors?.['required']">La Imágen es requerida</div>
+      </div>
+      <div *ngIf="imagen && imagen.length > 0">
+        <p>Imágenes seleccionadas:</p>
+        <ul>
+          <li *ngFor="let imagen of imagen">{{ imagen.name }}</li>
+        </ul>
+      </div>
+      <div *ngIf="previews && previews.length > 0">
+        <p>Previsualización:</p>
+        <div *ngFor="let preview of previews">
+          <img [src]="preview" alt="Imagen seleccionada" style="width: 150px; margin: 10px;" />
+        </div>
+      </div>
+    </div>
+    <button
+      class="btn btn-success"
+      type="submit"
+      [disabled]="usuarioForm.invalid"
+    >
+      Crear Usuario
+    </button>
+  </form>
+</div>
