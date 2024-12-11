@@ -56,40 +56,42 @@ public class Comentario {
     public void setId(Integer id) {
         this.id = id;
     }
+
     public String getTexto() {
         return texto;
     }
     public void setTexto(String texto) {
         this.texto = texto;
     }
+
     public Publicacion getPublicacion() {
         return publicacion;
     }
     public void setPublicacion(Publicacion publicacion) {
         this.publicacion = publicacion;
     }
+
     public Usuario getUsuario() {
         return usuario;
     }
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
+
     public List<ImagenesComentario> getImagenesComentarios() {
         return imagenesComentarios;
     }
-    public void setImagenesComentarios(List<ImagenesComentario> imagenesComentarios) {
-        this.imagenesComentarios = imagenesComentarios;
-    }
+    public void setImagenesComentarios(List<ImagenesComentario> imagenesComentarios) { this.imagenesComentarios = imagenesComentarios; }
+
     public LocalDate getFecha_creacion() {
         return fecha_creacion;
     }
     public void setFecha_creacion(LocalDate fecha_creacion) {
         this.fecha_creacion = fecha_creacion;
     }
+
     public LocalDate getFecha_actualizacion() {
         return fecha_actualizacion;
     }
-    public void setFecha_actualizacion(LocalDate fecha_actualizacion) {
-        this.fecha_actualizacion = fecha_actualizacion;
-    }
+    public void setFecha_actualizacion(LocalDate fecha_actualizacion) { this.fecha_actualizacion = fecha_actualizacion; }
 }

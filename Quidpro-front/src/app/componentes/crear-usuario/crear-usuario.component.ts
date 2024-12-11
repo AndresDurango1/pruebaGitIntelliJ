@@ -49,6 +49,11 @@ export class CrearUsuarioComponent implements OnInit {
       this.departamentos = data;
     });
   }
+  onDepartamentoChange() {
+    const departamentoId = this.usuarioForm.get('departamento')?.value;
+    this.cargarCiudades(departamentoId);
+    console.log(this.usuarioForm);
+  }
   cargarCiudades(departamentoId: number) {
     console.log('Cargando ciudades para el departamento:', departamentoId);
     this.ciudadService.getCiudadesPorDepartamento(departamentoId).subscribe(
@@ -67,12 +72,6 @@ export class CrearUsuarioComponent implements OnInit {
       this.roles = data;
     });
   }
-  onDepartamentoChange() {
-    const departamentoId = this.usuarioForm.get('departamento')?.value;
-    this.cargarCiudades(departamentoId);
-    console.log(this.usuarioForm);
-  }
-
   onFileChange(event: any): void {
     this.selectedFile = event.target.files[0];
     const input = event.target as HTMLInputElement;

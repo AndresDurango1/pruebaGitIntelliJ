@@ -3,7 +3,7 @@ import { BrowserModule, provideClientHydration, withEventReplay } from '@angular
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
-
+import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -42,7 +42,8 @@ import { CrearPublicacionComponent } from './componentes/crear-publicacion/crear
     HttpClientModule,
     ReactiveFormsModule,
     AppRoutingModule,
-    NgSelectModule
+    NgSelectModule,
+    FormsModule
   ],
   providers: [
     provideClientHydration(withEventReplay())

@@ -60,14 +60,13 @@ public class UsuarioControlador {
             @RequestParam("telefono") String telefono,
             @RequestParam("idCiudad") Integer idCiudad,
             @RequestParam("idRol") Integer idRol,
-            @RequestParam("imagen") MultipartFile imagen
+            @RequestParam(value = "imagen", required = false) MultipartFile imagen
     ) {
         ImagenesUsuario imagenesUsuario = null;
         try {
-            if (imagen.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            if (!imagen.isEmpty()) {
+                imagenesUsuario = imagenesUsuarioServicio.guardarImagenes(imagen);
             }
-            imagenesUsuario = imagenesUsuarioServicio.guardarImagenes(imagen);
             Integer idImagen = imagenesUsuario.getId();
             // Crear el objeto Usuario manualmente
             Usuario usuarioNuevo = new Usuario();
@@ -92,7 +91,7 @@ public class UsuarioControlador {
         }
     }
     //Metodo para actualizar un usuario
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", consumes = "multipart/form-data")
     public ResponseEntity<Usuario> actualizarUsuario(
             @PathVariable Integer id,
             @RequestParam(value = "nombres", required = false) String nombres,

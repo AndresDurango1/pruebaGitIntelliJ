@@ -23,13 +23,156 @@
             <td>{{usuario.correo}}</td>
             <td>{{usuario.telefono}}</td>
             <td>
-              <button class="btn btn-primary">Editar</button>
-              <button class="btn btn-danger">Eliminar</button>
+              <button class="btn btn-warning" (click)="openModal(usuario)">Editar</button>
+              <button class="btn btn-danger" (click)="eliminarUsuario(usuario.id)">Eliminar</button>
             </td>
           </tr>
         </tbody>
       </table>
       <button btn class="btn btn-success" [routerLink]="['/crear-usuario']" >Crear Usuario</button>
+    </div>
+  </div>
+  <!-- Modal Editar Usuario -->
+  <div *ngIf="isOpenModal" class="modal-backdrop">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Editar Usuario</h5>
+        <button class="btn btn-close" (click)="cerrarModal()"></button>
+      </div>
+      <div class="modal-body">
+        <form class="editarUsuarioForm" [formGroup]="editarUsuarioForm" (ngSubmit)="editarUsuario()">
+          <div class="form-group">
+            <label for="nombres">Nombres:</label>
+            <input
+              type="text"
+              id="nombres"
+              class="form-control"
+              name="nombres"
+              formControlName="nombres"
+            >
+          </div>
+          <div class="form-group">
+            <label for="apellidos">Apellidos:</label>
+            <input
+              type="text"
+              id="apellidos"
+              class="form-control"
+              name="apellidos"
+              formControlName="apellidos"
+            >
+          </div>
+          <div class="form-group">
+            <label for="usuario">Usuario:</label>
+            <input
+              type="text"
+              id="usuario"
+              class="form-control"
+              name="usuario"
+              formControlName="usuario"
+            >
+          </div>
+          <div class="form-group">
+            <label for="contrasena">Nueva Contraseña:</label>
+            <input
+              type="password"
+              id="contrasena"
+              class="form-control"
+              name="contrasena"
+              formControlName="contrasena"
+            >
+          </div>
+          <div class="form-group">
+            <label for="direccion">Direccion:</label>
+            <input
+              type="text"
+              id="direccion"
+              class="form-control"
+              name="direccion"
+              formControlName="direccion"
+            >
+          </div>
+          <div class="form-group">
+            <label for="correo">Correo:</label>
+            <input
+              type="email"
+              id="correo"
+              class="form-control"
+              name="correo"
+              formControlName="correo"
+              email
+
+            >
+          </div>
+          <div class="form-group">
+            <label for="telefono">Telefono:</label>
+            <input
+              type="text"
+              id="telefono"
+              class="form-control"
+              name="telefono"
+              formControlName="telefono"
+            >
+          </div>
+          <!-- Departamento -->
+          <div>
+            <label for="departamento">Departamento</label>
+            <select formControlName="departamento" class="form-control" id="departamento" (change)="onDepartamentoChange()">
+              <option value="" disabled selected>Seleccione un departamento</option>
+              <option *ngFor="let departamento of departamentos" [value]="departamento.id">
+                {{ departamento.departamento }}
+              </option>
+            </select>
+          </div>
+          <!-- Ciudad -->
+          <div>
+            <label for="ciudad">Ciudad</label>
+            <select formControlName="ciudad" class="form-control" id="ciudad">
+              <option value="" disabled selected>Seleccione una ciudad</option>
+              <option *ngFor="let ciudad of ciudades" [value]="ciudad.id">{{ ciudad.ciudad }}</option>
+            </select>
+          </div>
+          <!-- Rol -->
+          <div>
+            <label for="rol">Rol</label>
+            <select
+              formControlName="rol"
+              class="form-control"
+              id="rol"
+              required
+            >
+              <option value="" disabled selected>Seleccione un rol</option>
+              <option *ngFor="let rol of roles" [value]="rol.id">
+                {{ rol.rol }}
+              </option>
+            </select>
+          </div>
+          <!-- Imagen -->
+          <div>
+            <label for="imagen">Imagen:</label>
+            <input
+              formControlName="imagen"
+              class="form-control"
+              id="imagen"
+              type="file"
+              (change)="onFileChange($event)"
+              required
+            >
+            <div *ngIf="imagen && imagen.length > 0">
+              <p>Imágenes seleccionadas:</p>
+              <ul>
+                <li *ngFor="let imagen of imagen">{{ imagen.name }}</li>
+              </ul>
+            </div>
+            <div *ngIf="previews && previews.length > 0">
+              <p>Previsualización:</p>
+              <div *ngFor="let preview of previews">
+                <img [src]="preview" alt="Imagen seleccionada" style="width: 150px; margin: 10px;" />
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">Actualizar</button>
+        </form>
+      </div>
     </div>
   </div>
 </div>

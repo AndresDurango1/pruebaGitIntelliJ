@@ -62,6 +62,10 @@ public class ComentarioServicio {
     public Comentario consultarComentarioById(Integer id) {
         return validarExistencia(comentarioRepositorio.findById(id), "Comentario no encontrado con el ID: " + id);
     }
+    //Metodo para consultar registros por usuario
+    public List<Comentario> consultarComentariosPorUsuario(Integer idUsuario){
+        return comentarioRepositorio.findByUsuarioId(idUsuario);
+    }
     //Metodo para actualizar un comentario
     public Comentario actualizarComentarioById(Integer id, Comentario comentario, Integer idPublicacion, Integer idUsuario) {
         Comentario comentarioExistente = consultarComentarioById(id);

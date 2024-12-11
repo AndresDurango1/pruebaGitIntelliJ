@@ -26,7 +26,7 @@ public class Publicacion {
 
     /*RELACIONES DE MULTIPLICIDAD CON OTRAS CLASES*/
     //Relacion Uno a Muchos con la clase Comentario
-    @OneToMany(targetEntity = Comentario.class, fetch = FetchType.LAZY, mappedBy = "publicacion")
+    @OneToMany(targetEntity = Comentario.class, fetch = FetchType.LAZY, mappedBy = "publicacion", cascade = CascadeType.ALL)
     private List<Comentario> comentarios = new ArrayList<>();
 
     //Relacion Uno a Muchos con la clase ImagenPublicacion

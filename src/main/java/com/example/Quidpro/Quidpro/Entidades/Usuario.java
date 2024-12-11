@@ -32,7 +32,7 @@ public class Usuario {
 
     //Relacion Uno a Uno con la clase ImagenesUsuario
     @OneToOne(targetEntity = ImagenesUsuario.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_imagenUsuario")
+    @JoinColumn(name = "id_imagenUsuario", nullable = true)
     @JsonManagedReference
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private ImagenesUsuario imagenUsuario;
@@ -62,7 +62,7 @@ public class Usuario {
     private Ciudad ciudad;
 
     //Relacion Muchos a Muchos con la clase Emprendimiento
-    @ManyToMany(mappedBy = "usuarios")
+    @ManyToMany(mappedBy = "usuarios", cascade = CascadeType.ALL)
     private Set<Emprendimiento> emprendimientos = new HashSet<>();
 
     /*METODOS*/

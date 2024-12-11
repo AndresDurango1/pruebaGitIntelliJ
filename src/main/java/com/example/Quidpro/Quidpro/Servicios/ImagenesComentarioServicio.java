@@ -114,6 +114,7 @@ public class ImagenesComentarioServicio {
                 System.out.println("La imagen ya no existe en la base de datos.");
             }
         } catch (IOException e) {
+
             throw new RuntimeException("Error al eliminar la imagen", e);
         }
     }

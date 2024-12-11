@@ -63,6 +63,10 @@ public class PublicacionServicio {
     public Publicacion consultarPublicacionById(Integer id){
         return publicacionRepositorio.findByIdWithImages(id).orElseThrow(() -> new EntityNotFoundException("Publicación no encontrada"));
     }
+    //Metodo para consultar Registros por id de usuario
+    public List<Publicacion> consultarPublicacionesPorUsuario(Integer usuarioId){
+        return publicacionRepositorio.findByUsuarioId(usuarioId);
+    }
     //Metodo para Actualizar un Registro por Id
     public Publicacion actualizarPublicacion(Integer id, Publicacion publicacion, Integer idUsuario){
         Publicacion publicacionExiste = consultarPublicacionById(id);

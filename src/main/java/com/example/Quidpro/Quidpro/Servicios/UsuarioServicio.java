@@ -15,16 +15,24 @@ public class UsuarioServicio {
     private final RolRepositorio rolRepositorio;
     private final ImagenesUsuarioRepositorio imagenesUsuarioRepositorio;
     private final ImagenesUsuarioServicio imagenesUsuarioServicio;
+    private final PublicacionServicio publicacionServicio;
+    private final ImagenesPublicacionServicio imagenesPublicacionServicio;
+    private final ComentarioServicio comentarioServicio;
+    private final ImagenesComentarioServicio imagenesComentarioServicio;
 
     @Autowired
     public UsuarioServicio(UsuarioRepositorio usuarioRepositorio, CiudadRepositorio ciudadRepositorio,
                            RolRepositorio rolRepositorio, ImagenesUsuarioRepositorio imagenesUsuarioRepositorio,
-                           ImagenesUsuarioServicio imagenesUsuarioServicio) {
+                           ImagenesUsuarioServicio imagenesUsuarioServicio, PublicacionServicio publicacionServicio, ImagenesPublicacionServicio imagenesPublicacionServicio, ComentarioServicio comentarioServicio, ImagenesComentarioServicio imagenesComentarioServicio) {
         this.usuarioRepositorio = usuarioRepositorio;
         this.ciudadRepositorio = ciudadRepositorio;
         this.rolRepositorio = rolRepositorio;
         this.imagenesUsuarioRepositorio = imagenesUsuarioRepositorio;
         this.imagenesUsuarioServicio = imagenesUsuarioServicio;
+        this.publicacionServicio = publicacionServicio;
+        this.imagenesPublicacionServicio = imagenesPublicacionServicio;
+        this.comentarioServicio = comentarioServicio;
+        this.imagenesComentarioServicio = imagenesComentarioServicio;
     }
     // Metodo auxiliar para validar campos
     private boolean esCampoValido(String campo) {
@@ -49,7 +57,6 @@ public class UsuarioServicio {
             usuario.setImagenUsuario(imagenUsuario);
         }
     }
-
     // Metodo para crear un usuario
     public Usuario crearUsuario(Usuario usuario, Integer idCiudad, Integer idRol, Integer idImagenUsuario) {
         if (!esCampoValido(usuario.getNombres())) {
@@ -111,9 +118,9 @@ public class UsuarioServicio {
         return usuarioRepositorio.save(usuarioActualizado);
     }
     // Metodo para eliminar un usuario
-    public String eliminarUsuario(Integer id) {
-        Usuario usuario = usuarioRepositorio.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
+    public String eliminarUsuario(Integer idUsuario) {
+        Usuario usuario = usuarioRepositorio.findById(idUsuario)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + idUsuario));
 
         if (usuario.getImagenUsuario() != null) {
             int idImagen = usuario.getImagenUsuario().getId();
@@ -124,7 +131,25 @@ public class UsuarioServicio {
                 System.err.println("Error al eliminar la imagen: " + e.getMessage());
             }
         }
-        usuarioRepositorio.deleteById(id);
+        //Eliminar imagenes de los comentarios
+        List<Comentario> comentariosUsuario = comentarioServicio.consultarComentariosPorUsuario(idUsuario);
+        if(comentariosUsuario != null){
+            for(Comentario comentario : comentariosUsuario){
+                imagenesComentarioServicio.eliminarImagen(comentario.getImagenesComentarios());
+            }
+        } else{
+            return "No se encontraron comentarios para el usuario con id: " +idUsuario;
+        }
+        //Eliminar imagenes de las publicaciones
+        List<Publicacion> publicacionesUsuario = publicacionServicio.consultarPublicacionesPorUsuario(idUsuario);
+        if(publicacionesUsuario != null){
+            for(Publicacion publicacion : publicacionesUsuario){
+                imagenesPublicacionServicio.eliminarImagen(publicacion.getImagenesPublicaciones());
+            }
+        } else{
+            return "No se encontraron publicaciones para el usuario con id: " +idUsuario;
+        }
+        usuarioRepositorio.deleteById(idUsuario);
         return "Usuario eliminado con éxito";
     }
 }
